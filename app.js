@@ -61,7 +61,7 @@ app.use('/graphql', graphqlHttp({
 
 app.listen(3000);
 
-/* Example of query */
+/* Example of mutation's query */
 
 /* mutation {
   createEvent(eventInput: {
