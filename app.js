@@ -42,6 +42,9 @@ mutation {
   }) {
     title
     description
+    creator {
+        username
+    }
   }
 } 
 */
@@ -63,9 +66,13 @@ mutation {
 
 /*
 query {
-    events {
-        title,
-        _id
+  events {
+    date
+    title
+    creator {
+      username
+      email
     }
+  }
 }
 */
