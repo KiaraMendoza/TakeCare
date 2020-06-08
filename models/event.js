@@ -1,3 +1,4 @@
+//Requires from node_modules
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;

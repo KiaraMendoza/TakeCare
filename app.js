@@ -1,14 +1,15 @@
+//Requires from node_modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
 const mongoose = require('mongoose');
-
+//Requires from the project
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
-
+//MongoDB variables connections
 const url = 'mongodb://127.0.0.1:27017/merngql';
 const app = express();
-
+//MongoDB connection
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
@@ -22,6 +23,7 @@ db.on('error', err => {
 
 app.use(bodyParser.json());
 
+//GraphQl work
 app.use('/graphql', graphqlHttp({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
