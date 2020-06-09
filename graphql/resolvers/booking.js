@@ -5,7 +5,10 @@ const { transformBooking, transformEvent } = require('./merge');
 
 module.exports = {
     //query for all bookings
-    bookings: async () => {
+    bookings: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('You don\'t have permission to do that');
+        }
         try {
             const bookings = await Booking.find();
             return bookings.map(booking => {
@@ -16,16 +19,22 @@ module.exports = {
         }
     },
     //mutation for add bookings
-    bookEvent: async args => {
+    bookEvent: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('You don\'t have permission to do that');
+        }
         const fetchedEvent = await Event.findOne({ _id: args.eventId });
         const booking = new Booking({
-            user: '5eddf37b06f6ee19201ec96c',
+            user: req.userId,
             event: fetchedEvent
         });
         const result = await booking.save();
         return transformEvent(result);
     },
-    cancelBooking: async args => {
+    cancelBooking: async (args, req) => {
+        if (!req.isAuth) {
+            throw new Error('You don\'t have permission to do that');
+        }
         try {
             const selectedBooking = await Booking.findById(args.bookingId).populate('event');
             const bookedEvent = transformEvent(selectedBooking.event);

@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 //Requires from the project
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
+const isAuth = require('./middleware/is-auth');
 //MongoDB variables connections
 const url = 'mongodb://127.0.0.1:27017/merngql';
 const app = express();
@@ -22,6 +23,8 @@ db.on('error', err => {
 })
 
 app.use(bodyParser.json());
+
+app.use(isAuth);
 
 //GraphQl work
 app.use('/graphql', graphqlHttp({

@@ -1,5 +1,6 @@
 //Requires from node_modules
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 //Requires from the project
 const User = require('../../models/user');
 
@@ -23,4 +24,29 @@ module.exports = {
             throw err;
         }
     },
+    login: async ({ email, password }) => {
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            throw new Error('User doesn\'t exist!');
+        }
+        const isEqual = await bcrypt.compare(password, user.password);
+        if (!isEqual) {
+            throw new Error('Password is incorrect!');
+        }
+        const token = await jwt.sign({ userId: user.id, email: user.email }, 'passw0rd?', {
+            expiresIn: '1h'
+        });
+        return { userId: user.id, token: token, tokenExpiration: 1}
+    },
+};
+
+/* Example of login query */
+/*
+query {
+  login(email: "kiara@test.com", password: "kiara1234"){
+    userId
+    token
+    tokenExpiration
+  }
 }
+*/
