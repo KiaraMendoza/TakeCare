@@ -1,5 +1,6 @@
+//Imports from the node_modules
 import React, { Component } from 'react';
-
+//Imports from the project
 import Modal from '../modal/modal';
 import Overlay from '../components/overlay';
 import '../SCSS/events.scss';
@@ -14,7 +15,7 @@ class EventsPage extends Component {
     }
 
     modalConfirmHandler = () => {
-
+        console.log('Confirmed!')
     }
 
     modalCancelHandler = () => {

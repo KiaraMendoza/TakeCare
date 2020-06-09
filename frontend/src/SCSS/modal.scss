@@ -2,16 +2,22 @@
 
 .modal-container {
     width: 100%;
-    background-color: $ternaryColor;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    position: fixed;
+    position: relative;
+    padding: 0 25px;
+    background-color: transparent;
     top: 20vh;
+    > div {
+        background-color: $ternaryColor;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
 }
 
 .modal-header {
     padding: 1rem;
     background-color: $primaryColor;
     color: #FFF;
+    border-radius: 0;
+    border: 0;
     p {
         margin: 0;
         font-size: 1.25rem;
@@ -21,4 +27,5 @@
 .modal-content {
     padding: 1rem;
     color: #000;
+    border-radius: 0;
 }

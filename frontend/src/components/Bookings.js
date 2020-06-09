@@ -1,3 +1,4 @@
+//Imports from the node_modules
 import React, { Component } from 'react';
 
 class BookingsPage extends Component {

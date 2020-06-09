@@ -1,8 +1,11 @@
+//Imports from the node_modules
 import React, { Component } from 'react';
-
+//Imports from the project
 import '../SCSS/login-form.scss';
 import AuthContext from '../context/auth-context';
 
+
+//Dynamic component for SignIn/SignUp
 class LoginPage extends Component {
     state = {
         isLogin: true,
@@ -41,6 +44,7 @@ class LoginPage extends Component {
             return;
         }
 
+        //For SignIn
         let requestBody = {
             query: `
                 query {
@@ -53,6 +57,7 @@ class LoginPage extends Component {
             `
         }
 
+        //For SignUp
         if (!this.state.isLogin) {
             const requestBody = {
                 query: `

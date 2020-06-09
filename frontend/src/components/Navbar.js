@@ -1,12 +1,15 @@
+//Imports from the node_modules
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-
+//Imports from the project
 import AuthContext from '../context/auth-context';
 import '../SCSS/navbar.scss';
 
+//Dynamic Navbar component that changes if loged in
 const Navbar = props => {
     return (
         <AuthContext.Consumer>
+            {/* Using the AuthContext to access some app states like if token */}
             {(context) => {
                 return (
                     <header className="main-navigation">

@@ -24,6 +24,7 @@ db.on('error', err => {
 
 app.use(bodyParser.json());
 
+//Headers needed by the navigator to make requests
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
