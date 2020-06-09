@@ -1,0 +1,18 @@
+@import 'variables';
+
+.login-form-container {
+    height: 100%;
+    h1 {
+        font-size: 4.5rem;
+    }
+}
+
+.login-form {
+    label {
+
+    }
+    input {
+        max-width: 60%;
+        margin: 0 auto;
+    }
+}

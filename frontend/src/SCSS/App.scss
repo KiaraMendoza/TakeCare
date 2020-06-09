@@ -1,0 +1,57 @@
+@import 'variables';
+
+.app {
+    min-height: 100vh;
+    background-color: $secondaryColor;
+    p {
+        font-weight: 200;
+        font-family: "Changa",sans-serif;
+    }
+}
+
+.main-content {
+    height: 80vh;
+    max-height: 100%;
+    color: #FFF;
+    padding-top: 150px;
+}
+
+.footer-content {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 10px 0;
+    background-color: $footerColor;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-primary {
+    color: #fff;
+    font-weight: 700;
+    border: 2px solid $primaryColor !important;
+    background-color: transparent;
+    &:hover, &:active, &:focus {
+        background-color: $primaryColor !important;
+        border-color: $secondaryColor;
+    }
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+    &:hover, :active, :focus {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+}
+
+.black-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+}

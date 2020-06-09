@@ -1,0 +1,24 @@
+@import 'variables';
+
+.modal-container {
+    width: 100%;
+    background-color: $ternaryColor;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 20vh;
+}
+
+.modal-header {
+    padding: 1rem;
+    background-color: $primaryColor;
+    color: #FFF;
+    p {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+}
+
+.modal-content {
+    padding: 1rem;
+    color: #000;
+}
