@@ -1,5 +1,6 @@
 //Requires from the project
 const Event = require('../../models/event');
+const Post = require('../../models/post');
 const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date');
 
@@ -25,12 +26,34 @@ const singleEvent = async eventId => {
     };
 };
 
+const posts = async postsIds => {
+    try {
+        const posts = await Post.find({ _id: { $in: postsIds } });
+        return posts.map(post => {
+            return transformPost(post);
+        });
+    }
+    catch (err) {
+        throw err;
+    };
+};
+
+const singlePost = async postId => {
+    try {
+        const post = await Post.findById(postId);
+        return transformPost(post);
+    } catch (err) {
+        throw err;
+    };
+};
+
 const user = async userId => {
     try {
         const user = await User.findById(userId);
         return {
             ...user._doc,
-            createdEvents: events.bind(this, user._doc.createdEvents)
+            createdEvents: events.bind(this, user._doc.createdEvents),
+            createdPosts: events.bind(this, user._doc.createdPosts)
         };
     } catch (err) {
         throw err;
@@ -46,6 +69,15 @@ const transformEvent = event => {
     };
 };
 
+const transformPost = post => {
+    return {
+        ...post._doc,
+        createdAt: dateToString(post._doc.createdAt),
+        updatedAt: dateToString(post._doc.updatedAt),
+        creator: user.bind(this, post.creator)
+    };
+};
+
 const transformBooking = booking => {
     return {
         ...booking._doc,
@@ -58,6 +90,7 @@ const transformBooking = booking => {
 
 exports.transformEvent = transformEvent;
 exports.transformBooking = transformBooking;
+exports.transformPost = transformPost;
 
 //exports.user = user;
 //exports.events = events;

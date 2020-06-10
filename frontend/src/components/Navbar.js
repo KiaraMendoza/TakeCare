@@ -26,6 +26,9 @@ const Navbar = props => {
                                 <li>
                                     <NavLink to="/events">Events</NavLink>
                                 </li>
+                                <li>
+                                    <NavLink to="/posts">Posts</NavLink>
+                                </li>
                                 {context.token && (
                                     <React.Fragment>
                                         <li>

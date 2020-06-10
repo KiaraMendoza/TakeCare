@@ -16,6 +16,7 @@ module.exports = {
             const user = new User({
                 username: args.userInput.username,
                 email: args.userInput.email,
+                rol: 'User',
                 password: hashedPassword
             })
             const result = await user.save();
@@ -36,7 +37,7 @@ module.exports = {
         const token = await jwt.sign({ userId: user.id, email: user.email }, 'passw0rd?', {
             expiresIn: '1h'
         });
-        return { userId: user.id, token: token, tokenExpiration: 1}
+        return { userId: user.id, userRol: user.rol, token: token, tokenExpiration: 1}
     },
 };
 
@@ -45,6 +46,7 @@ module.exports = {
 query {
   login(email: "kiara@test.com", password: "kiara1234"){
     userId
+    userRol
     token
     tokenExpiration
   }

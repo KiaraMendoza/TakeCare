@@ -50,6 +50,7 @@ class LoginPage extends Component {
                 query {
                     login(email: "${email}", password: "${password}") {
                         userId
+                        userRol
                         token
                         tokenExpiration
                     }
@@ -90,6 +91,7 @@ class LoginPage extends Component {
                 this.context.login(
                     resDataLogin.token,
                     resDataLogin.userId,
+                    resDataLogin.userRol,
                     resDataLogin.tokenExpiration
                 )
             }

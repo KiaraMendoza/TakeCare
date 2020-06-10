@@ -8,7 +8,7 @@ const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
 const isAuth = require('./middleware/is-auth');
 //MongoDB variables connections
-const url = 'mongodb://127.0.0.1:27017/merngql';
+const url = 'mongodb://127.0.0.1:27017/takecare';
 const app = express();
 //MongoDB connection
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });

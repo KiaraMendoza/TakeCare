@@ -7,7 +7,10 @@ const userSchema = new Schema({
     username : { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    createdEvents: [ { type: Schema.Types.ObjectId, ref: 'Event' } ],
+    rol: { type: String, required: true},
+    createdEvents: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
+    createdPosts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+    createdComments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 });
 
 module.exports = mongoose.model('User', userSchema);
