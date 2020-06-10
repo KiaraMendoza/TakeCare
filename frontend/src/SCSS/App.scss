@@ -1,7 +1,6 @@
 @import 'variables';
 
 .app {
-    min-height: 100vh;
     background-color: $secondaryColor;
     p {
         font-weight: 200;
@@ -10,17 +9,14 @@
 }
 
 .main-content {
-    height: 80vh;
+    min-height: 95vh;
     max-height: 100%;
     color: #FFF;
     padding-top: 150px;
 }
 
 .footer-content {
-    position: fixed;
     width: 100%;
-    bottom: 0;
-    left: 0;
     padding: 10px 0;
     background-color: $footerColor;
     color: rgba(255, 255, 255, 0.7);

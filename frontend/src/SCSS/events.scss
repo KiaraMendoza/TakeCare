@@ -1,4 +1,51 @@
 @import 'variables';
+@import 'login-form.scss';
 
-.events-control {
+.event-form {
+    @extend .login-form;
+}
+
+.events-list-container {
+    width: 100%;
+    .events-list {
+        width: 80%;
+        margin: 2rem auto;
+        list-style: none;
+        padding: 0;
+    }
+    .list-left-content {
+        width: 40%;
+    }
+    .list-title {
+        font-size: 1.8rem;
+    }
+    .list-price {
+        font-size: 1.3rem;
+    }
+    .list-right-content {
+        width: 40%;
+    }
+    .events-list-item {
+        border: 1px solid #FFF;
+    }
+    .list-buttons button{
+        position: absolute;
+        bottom: -40px;
+        border: 0;
+    }
+    .list-edit-button {
+        right: 160px;
+    }
+}
+
+@media(min-width: $desktopBreak) {
+    
+}
+
+@media(min-width: $tabletBreak) and (max-width: $beforeDesktopBreak) {
+    .events-list-container {
+        .list-edit-button {
+            right: 120px;
+        }
+    }
 }

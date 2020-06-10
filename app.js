@@ -56,8 +56,11 @@ mutation {
     price: 1.5,
     date: "2020-06-03"
   }) {
+    _id
     title
     description
+    price
+    date
     creator {
         username
     }
