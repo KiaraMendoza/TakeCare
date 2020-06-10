@@ -8,7 +8,6 @@ const userSchema = new Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     rol: { type: String, required: true},
-    createdEvents: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
     createdPosts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     createdComments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
 });

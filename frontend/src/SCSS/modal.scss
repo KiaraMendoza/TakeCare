@@ -2,10 +2,10 @@
 
 .modal-container {
     width: 100%;
-    position: relative;
+    position: fixed;
     padding: 0 25px;
     background-color: transparent;
-    top: 5vh;
+    top: 15vh;
     z-index: 2;
     > div {
         background-color: $ternaryColor;

@@ -23,9 +23,7 @@ class LoginPage extends Component {
     }
     
     switchModeHandler = () => {
-        this.setState(prevState => {
-            return {isLogin: !prevState.isLogin};
-        })
+        this.setState({isLogin: !this.state.isLogin});
     }
 
     submitHandler = (event) => {
@@ -43,10 +41,12 @@ class LoginPage extends Component {
             console.log('Invalid or empty password');
             return;
         }
+        let requestBody;
 
         //For SignIn
-        let requestBody = {
-            query: `
+        if (this.state.isLogin) {
+            requestBody = {
+                query: `
                 query {
                     login(email: "${email}", password: "${password}") {
                         userId
@@ -56,15 +56,18 @@ class LoginPage extends Component {
                     }
                 }
             `
+            }
         }
 
         //For SignUp
         if (!this.state.isLogin) {
-            const requestBody = {
+            requestBody = {
                 query: `
                     mutation {
                         createUser(userInput: {username: "${username}", email: "${email}", password: "${password}"}) {
                             _id
+                            username
+                            rol
                             email
                         }
                     }
@@ -86,8 +89,11 @@ class LoginPage extends Component {
             return res.json();
         })
         .then(resData => {
-            const resDataLogin = resData.data.login;
-            if (resDataLogin.token) {
+            console.log(resData);
+            if (resData.data.createUser) {
+                console.log('User created!');
+            } else if (resData.data.login.token) {
+                const resDataLogin = resData.data.login;
                 this.context.login(
                     resDataLogin.token,
                     resDataLogin.userId,
@@ -95,6 +101,7 @@ class LoginPage extends Component {
                     resDataLogin.tokenExpiration
                 )
             }
+            return resData;
         })
         .catch(err => {
             throw err;
@@ -119,7 +126,7 @@ class LoginPage extends Component {
                         <input className="form-control" type="password" id="password" placeholder="StrongPassword!" ref={this.passwordEl} />
                     </div>
                     <div className="d-flex justify-content-center mt-4">
-                        <button className="btn btn-primary mr-3" type="submit">Sign in</button>
+                        <button className="btn btn-primary mr-3" type="submit">{this.state.isLogin ? 'Sign in' : 'Sign up'}</button>
                         <button className="btn btn-primary" type="button" onClick={this.switchModeHandler}>Switch to {this.state.isLogin ? 'Sign up' : 'Sign in'} </button>
                     </div>
                 </form>

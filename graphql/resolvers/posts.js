@@ -5,7 +5,7 @@ const User = require('../../models/user');
 const { transformPost } = require('./merge');
 
 module.exports = {
-    //query for all events
+    //query for all posts
     posts: async () => {
         try {
             const posts = await Post.find();
@@ -16,7 +16,7 @@ module.exports = {
             throw err;
         }
     },
-    //mutation for create events
+    //mutation for create posts
     createPost: async (args, req) => {
         if (!req.isAuth) {
             throw new Error('You don\'t have permission to do that');

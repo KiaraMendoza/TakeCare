@@ -7,8 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import './SCSS/App.scss';
 import AuthContext from './context/auth-context';
 import LoginPage from './components/Login';
-import EventsPage from './components/Events';
-import BookingsPage from './components/Bookings';
 import PostsPage from './components/Posts';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -37,12 +35,9 @@ class App extends Component {
             <main className="main-content">
               <Switch>
                 {!this.state.token && <Redirect from="/" to="/login" exact />}
-                {!this.state.token && <Redirect from="/bookings" to="/login" exact />}
                 {!this.state.token && <Route path="/login" component={LoginPage} />}
                 {this.state.token && <Redirect from="/login" to="/posts" exact />}
-                <Route path="/events" component={EventsPage} />
                 <Route path="/posts" component={PostsPage} />
-                {this.state.token && <Route path="/bookings" component={BookingsPage} />}
               </Switch>
             </main>
           </AuthContext.Provider>

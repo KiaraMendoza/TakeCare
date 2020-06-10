@@ -85,8 +85,7 @@ mutation {
 
 /*
 query {
-  events {
-    date
+  posts {
     title
     creator {
       username

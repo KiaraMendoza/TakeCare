@@ -2,38 +2,6 @@
 const { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
-    type Booking {
-        _id: ID!
-        event: Event!
-        user: User!
-        createdAt: String!
-        updatedAt: String!
-    }
-
-    type Event {
-        _id: ID!
-        title: String!
-        description: String!
-        price: Float!
-        date: String!
-        creator: User!
-    }
-
-    type CommentLike {
-        _id: ID!
-        comment: Comment!
-        creator: User!
-    }
-
-    type Comment {
-        _id: ID!
-        content: String!
-        post: Post!
-        creator: User!
-        createdAt: String!
-        updatedAt: String!
-    }
-    
     type Post {
         _id: ID!
         title: String!
@@ -52,13 +20,27 @@ module.exports = buildSchema(`
         creator: User!
     }
 
+    type Comment {
+        _id: ID!
+        content: String!
+        post: Post!
+        creator: User!
+        createdAt: String!
+        updatedAt: String!
+    }
+    
+    type CommentLike {
+        _id: ID!
+        comment: Comment!
+        creator: User!
+    }
+
     type User {
         _id: ID!
         username: String!
         email: String!
         password: String
         rol: String!
-        createdEvents: [Event!]
         createdPost: [Post!]
         createdComments: [Comment!]
         likedPost: [PostLike!]
@@ -70,13 +52,6 @@ module.exports = buildSchema(`
         userRol: String!
         token: String!
         tokenExpiration: Int!
-    }
-
-    input EventInput {
-        title: String!
-        description: String!
-        price: Float!
-        date: String!
     }
 
     input PostInput {
@@ -92,18 +67,14 @@ module.exports = buildSchema(`
     }
 
     type RootQuery {
-        events: [Event!]!
         posts: [Post!]!
-        bookings: [Booking!]!
+        users: [User!]!
         login(email: String!, password: String!):AuthData!
     }
 
     type RootMutation {
-        createEvent(eventInput: EventInput): Event
         createPost(postInput: PostInput): Post
         createUser(userInput: UserInput): User
-        bookEvent(eventId: ID!): Booking!
-        cancelBooking(bookingId: ID!): Event!
     }
 
     schema {

@@ -5,7 +5,7 @@ import Modal from '../modal/modal';
 import Overlay from './Overlay';
 import AuthContext from '../context/auth-context';
 import PostsList from '../components/Posts/PostsList';
-import '../SCSS/events.scss';
+import '../SCSS/posts.scss';
 
 class PostsPage extends Component {
     state = {
@@ -79,7 +79,7 @@ class PostsPage extends Component {
     }
 
     modalConfirmHandler = () => {
-        //We get the event's data using React references on the inputs
+        //We get the posts's data using React references on the inputs
         const title = this.titleEl.current.value;
         const imageUrl = this.imageEl.current.value;
         const description = this.descriptionEl.current.value;
@@ -99,7 +99,7 @@ class PostsPage extends Component {
         const requestBody = {
             query: `
                 mutation {
-                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: ${imageUrl}} ) {
+                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: "${imageUrl}"} ) {
                         _id
                         title
                         description
@@ -127,18 +127,26 @@ class PostsPage extends Component {
                 'Authorization': 'Bearer ' + token
             }
         })
-            .then(res => {
-                if (res.status !== 200 && res.status !== 201) {
-                    throw new Error('Failed!');
-                }
-                return res.json();
-            })
-            .then(resData => {
-                console.log(resData);
-            })
-            .catch(err => {
-                throw err;
+        .then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                console.log(res);
+                throw new Error('Failed!');
+            }
+            return res.json();
+        })
+        .then(resData => {
+            console.log(resData.data.createPost);
+            const createdPost = resData.data.createPost;
+            this.setState(prevState => {
+                const updatedPosts = [...prevState.posts];
+                updatedPosts.push(createdPost);
+
+                return { posts: updatedPosts };
             });
+        })
+        .catch(err => {
+            throw err;
+        });
 
         this.setState({ creating: false });
     }
@@ -152,10 +160,10 @@ class PostsPage extends Component {
 
         return (
             <React.Fragment>
-                <div className="events-control text-center">
+                <div className="posts-control text-center">
                     <h1>Recent Posts</h1>
                     {this.context.token &&
-                        <button className="btn btn-primary" onClick={this.startCreateEventHandler}>Create a new post!</button>
+                        <button className="btn btn-primary" onClick={this.startCreatePostsHandler}>Create a new post!</button>
                     }
                 </div>
                 {this.state.creating &&
@@ -163,7 +171,7 @@ class PostsPage extends Component {
                 }
                 {this.state.creating &&
                     <Modal title="Add a new Post" canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalConfirmHandler}>
-                        <form className="event-form text-center" onSubmit={this.submitHandler}>
+                        <form className="posts-form text-center" onSubmit={this.submitHandler}>
                             <div className="mt-4 d-flex flex-column mt-4">
                                 <label htmlFor="title">Title</label>
                                 <input className="form-control" type="text" id="title" ref={this.titleEl} />
@@ -179,7 +187,7 @@ class PostsPage extends Component {
                         </form>
                     </Modal>
                 }
-                <section className="events-list-container mt-5">
+                <section className="posts-list-container mt-5">
                     <PostsList posts={this.state.posts} authUserId={this.context.userId} authUserRol={this.context.userRol} />
                 </section>
             </React.Fragment>

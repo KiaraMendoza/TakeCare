@@ -1,13 +1,13 @@
 @import 'variables';
 @import 'login-form.scss';
 
-.event-form {
+.post-form {
     @extend .login-form;
 }
 
-.events-list-container {
+.posts-list-container {
     width: 100%;
-    .events-list {
+    .posts-list {
         width: 80%;
         margin: 2rem auto;
         list-style: none;
@@ -25,7 +25,7 @@
     .list-right-content {
         width: 40%;
     }
-    .events-list-item {
+    .posts-list-item {
         border: 1px solid #FFF;
     }
     .list-buttons button{
@@ -43,7 +43,7 @@
 }
 
 @media(min-width: $tabletBreak) and (max-width: $beforeDesktopBreak) {
-    .events-list-container {
+    .posts-list-container {
         .list-edit-button {
             right: 120px;
         }

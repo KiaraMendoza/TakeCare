@@ -4,7 +4,7 @@ import React from 'react';
 import '../SCSS/modal.scss';
 
 
-//Custom modal dynamic component for creating things like events
+//Custom modal dynamic component for creating things like posts
 const modal = props => {
     return (
         <div className="modal-container">
