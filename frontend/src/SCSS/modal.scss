@@ -11,7 +11,6 @@
         background-color: $ternaryColor;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         max-width: 80%;
-        margin: 0 auto;
     }
 }
 
@@ -36,13 +35,11 @@
 @media(min-width: $desktopBreak) {
     .modal-container > div {
         max-width: 50%;
-        margin: 0 auto;
     }
 }
 
 @media(min-width: $tabletBreak) and (max-width: $beforeDesktopBreak) {
     .modal-container > div {
         max-width: 60%;
-        margin: 0 auto;
     }
 }

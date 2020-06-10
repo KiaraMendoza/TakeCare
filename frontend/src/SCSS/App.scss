@@ -8,6 +8,15 @@
     }
 }
 
+main {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.aside-content {
+    color: #FFF;
+}
+
 .main-content {
     min-height: 95vh;
     max-height: 100%;
@@ -50,4 +59,16 @@
     width: 100vw;
     top: 0;
     left: 0;
+}
+
+@media(min-width: $desktopBreak) {
+    .main{
+        max-width: 70%;
+    }
+}
+
+@media(min-width: $tabletBreak) and (max-width: $beforeDesktopBreak) {
+    .main{
+        max-width: 100%;
+    }
 }

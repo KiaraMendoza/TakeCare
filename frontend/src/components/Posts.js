@@ -5,12 +5,19 @@ import Modal from '../modal/modal';
 import Overlay from './Overlay';
 import AuthContext from '../context/auth-context';
 import PostsList from '../components/Posts/PostsList';
+import PostForm from '../components/Posts/PostForm';
+import PostDetail from '../components/Posts/PostDetail';
+import CategoriesAside from '../components/Asides/Categories';
+import InfoAside from '../components/Asides/Info';
 import '../SCSS/posts.scss';
+import '../SCSS/loading-spinner.scss';
 
 class PostsPage extends Component {
     state = {
         creating: false,
         posts: [],
+        isLoading: false,
+        selectedPost: null,
     }
 
     static contextType = AuthContext;
@@ -28,6 +35,7 @@ class PostsPage extends Component {
     }
 
     fetchPosts = () => {
+        this.setState({isLoading: true})
         const requestBody = {
             query: `
                 query {
@@ -64,11 +72,12 @@ class PostsPage extends Component {
         })
         .then(resData => {
             const resPostsData = resData.data.posts;
-            this.setState({ posts: resPostsData })
+            this.setState({ posts: resPostsData, isLoading: false })
             console.log(this.state.posts);
 
         })
         .catch(err => {
+            this.setState({ isLoading: false });
             throw err;
         });
     }
@@ -153,43 +162,59 @@ class PostsPage extends Component {
 
     //Close the modal
     modalCancelHandler = () => {
-        this.setState({ creating: false });
+        this.setState({ creating: false, selectedPost: null });
+    }
+
+
+    //Functions for see detail and comment
+    showDetailHandler = (postId) => {
+        this.setState(prevState => {
+            const selectedPost = prevState.posts.find(post => post._id === postId);
+            return { selectedPost: selectedPost };
+        });
+
+        console.log("showDetailHandler", this.state.selectedPost, postId)
+    }
+
+    modalCommentHandler = () => {
+
     }
 
     render() {
 
         return (
             <React.Fragment>
-                <div className="posts-control text-center">
-                    <h1>Recent Posts</h1>
-                    {this.context.token &&
-                        <button className="btn btn-primary" onClick={this.startCreatePostsHandler}>Create a new post!</button>
-                    }
+                <div className="posts-container row mx-0">
+                    <aside className="categories-aside d-none d-md-flex col-md-2"><CategoriesAside /></aside>
+                    <div className="post-page-content col-10 col-xl-8">
+                        <div className="posts-control text-center">
+                            <h1>Recent Posts</h1>
+                            {this.context.token &&
+                                <button className="btn btn-primary" onClick={this.startCreatePostsHandler}>Create a new post!</button>
+                            }
+                        </div>
+                        {this.state.isLoading
+                            ? <div className="text-center"><div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+                            : <section className="posts-list-container mt-5">
+                                <PostsList onDetail={this.showDetailHandler} posts={this.state.posts} authUserId={this.context.userId} authUserRol={this.context.userRol} />
+                            </section>
+                        }
+                        {this.state.creating &&
+                            <Overlay />
+                        }
+                        {this.state.creating &&
+                            <Modal title="Add a new Post" canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalConfirmHandler}>
+                                <PostForm submitHandler={this.submitHandler} titleEl={this.titleEl} descriptionEl={this.descriptionEl} imageEl={this.imageEl} />
+                            </Modal>
+                        }
+                        {this.state.selectedPost &&
+                            <Modal title={this.state.selectedPost.title} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalCommentHandler}>
+                                <PostDetail selectedPost={this.state.selectedPost} />
+                            </Modal>
+                        }
+                    </div>
+                    <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><InfoAside /></aside>
                 </div>
-                {this.state.creating &&
-                    <Overlay />
-                }
-                {this.state.creating &&
-                    <Modal title="Add a new Post" canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalConfirmHandler}>
-                        <form className="posts-form text-center" onSubmit={this.submitHandler}>
-                            <div className="mt-4 d-flex flex-column mt-4">
-                                <label htmlFor="title">Title</label>
-                                <input className="form-control" type="text" id="title" ref={this.titleEl} />
-                            </div>
-                            <div className="mt-4 d-flex flex-column mt-4">
-                                <label htmlFor="description">Description</label>
-                                <textarea className="form-control" rows="4" id="description" ref={this.descriptionEl} />
-                            </div>
-                            <div className="mt-4 d-flex flex-column mt-4">
-                                <label htmlFor="imageUrl">Image url</label>
-                                <input className="form-control" type="text" id="image" ref={this.imageEl} />
-                            </div>
-                        </form>
-                    </Modal>
-                }
-                <section className="posts-list-container mt-5">
-                    <PostsList posts={this.state.posts} authUserId={this.context.userId} authUserRol={this.context.userRol} />
-                </section>
             </React.Fragment>
         )
     }
