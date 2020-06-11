@@ -138,13 +138,11 @@ class PostsPage extends Component {
         })
         .then(res => {
             if (res.status !== 200 && res.status !== 201) {
-                console.log(res);
                 throw new Error('Failed!');
             }
             return res.json();
         })
         .then(resData => {
-            console.log(resData.data.createPost);
             const createdPost = resData.data.createPost;
             this.setState(prevState => {
                 const updatedPosts = [...prevState.posts];
@@ -184,7 +182,7 @@ class PostsPage extends Component {
             <React.Fragment>
                 <div className="posts-container row mx-0">
                     <aside className="categories-aside d-none d-md-flex col-md-2"><CategoriesAside /></aside>
-                    <div className="post-page-content col-10 col-xl-8">
+                    <div className="post-page-content col-12 col-md-10 col-xl-8">
                         <div className="posts-control text-center">
                             <h1>Recent Posts</h1>
                             {this.context.token &&

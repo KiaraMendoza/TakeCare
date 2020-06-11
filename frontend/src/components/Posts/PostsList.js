@@ -7,7 +7,7 @@ import '../../SCSS/posts.scss';
 //Dinamically render posts by mapping the fetched-populated post's state.
 const PostItem = props => {
     return (
-        <div className="col-12 my-5 p-4">
+        <div className={`col-12 my-5 p-4 ${props.className}`}>
             <div key={props._id} className="posts-list-item p-4">
                 <div className="list-header d-flex justify-content-between">
                     <h3 className="list-title pr-3 mb-0">{props.title}</h3>
@@ -38,7 +38,7 @@ const PostsList = props => {
             if (post.creator) {
                 return <PostItem key={post._id} postId={post._id} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={post.creator._id} title={post.title} description={post.description} creator={post.creator.username} createdAt={post.createdAt} image={post.imageUrl} />
             } else {
-                return <PostItem key={post._id} postId={post._id} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={props.userData._id} title={post.title} description={post.description} creator={props.userData.username} createdAt={post.createdAt} image={post.imageUrl} />
+                return <PostItem className="col-md-6" key={post._id} postId={post._id} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={props.userData._id} title={post.title} description={post.description} creator={props.userData.username} createdAt={post.createdAt} image={post.imageUrl} />
             }
         })
     

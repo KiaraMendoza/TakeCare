@@ -78,10 +78,14 @@ class ProfilePage extends Component {
         const userData = this.state.userData;
         return (
             <div className="profile-container">
-                <div className="profile-detail">
-                    <div className="detail-left-side">
+                <div className="profile-detail p-5 row mx-0">
+                    <div className="detail-left-side col-12 col-md-4 text-center">
                         <img src={`${this.state.userData.userProfileImg ? this.state.userData.userProfileImg : 'https://via.placeholder.com/350x320'}`} className="user-profile-image" width="150px"/>
                         <p>{this.state.userData.username}</p>
+                    </div>
+                    <div className="detail-right-side col-12 col-md-8">
+                        <p>About me:</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis nunc libero, a cursus felis tristique volutpat. Duis sit amet nunc libero. Nullam vehicula augue a felis tristique efficitur. In nunc ipsum, luctus et ipsum at, porttitor tempus ante. Maecenas at dictum tortor. Nunc lobortis ornare arcu, a tempus dolor molestie vitae. Vestibulum eget auctor risus. Curabitur porta suscipit arcu, sed scelerisque tellus fringilla eu.</p>
                     </div>
                 </div>
                 <div className="profile-posts">
