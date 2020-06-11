@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 //Requires from the project
 const User = require('../../models/user');
+const { transformUser } = require('./merge');
 
 module.exports = {
     //mutation for create users, using bcrypt to encrypt the password
@@ -39,6 +40,25 @@ module.exports = {
         });
         return { userId: user.id, userRol: user.rol, token: token, tokenExpiration: 1}
     },
+    //query for get all users.
+    users: async () => {
+        try {
+            const users = await User.find();
+            return users.map(user => {
+                return transformUser(user);
+            })
+        } catch (err) {
+            throw err;
+        }
+    },
+    userData: async (userId) => {
+        try {
+            const user = await User.findById(userId);
+            return transformUser(user);
+        } catch (err) {
+            throw err;
+        }
+    },
 };
 
 /* Example of login query */
@@ -49,6 +69,16 @@ query {
     userRol
     token
     tokenExpiration
+  }
+}
+*/
+
+/* Example of single user query */
+/*
+query {
+  userData(_id : "5ee0e302c03420441cd40b74") {
+    username
+    email
   }
 }
 */

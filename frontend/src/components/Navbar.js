@@ -29,6 +29,9 @@ const Navbar = props => {
                                 {context.token && (
                                     <React.Fragment>
                                         <li>
+                                            <NavLink to={`/profile/${context.userId}`}>Profile</NavLink>
+                                        </li>
+                                        <li>
                                             <button className="btn btn-secondary" onClick={context.logout}>Logout</button>
                                         </li>
                                     </React.Fragment>

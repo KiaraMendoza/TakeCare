@@ -27,6 +27,7 @@ module.exports = buildSchema(`
         creator: User!
         createdAt: String!
         updatedAt: String!
+        likes: [CommentLike!]
     }
     
     type CommentLike {
@@ -41,7 +42,8 @@ module.exports = buildSchema(`
         email: String!
         password: String
         rol: String!
-        createdPost: [Post!]
+        userProfileImg: String
+        createdPosts: [Post!]
         createdComments: [Comment!]
         likedPost: [PostLike!]
         likedComments: [PostLike!]
@@ -69,6 +71,7 @@ module.exports = buildSchema(`
     type RootQuery {
         posts: [Post!]!
         users: [User!]!
+        userData(_id: String): User!
         login(email: String!, password: String!):AuthData!
     }
 

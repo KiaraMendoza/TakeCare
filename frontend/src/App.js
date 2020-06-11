@@ -10,6 +10,7 @@ import LoginPage from './components/Login';
 import PostsPage from './components/Posts';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ProfilePage from './components/Profile/Profile';
 
 class App extends Component {
   state = {
@@ -34,10 +35,11 @@ class App extends Component {
             <Navbar />
               <main className="main-content">
                 <Switch>
+                  <Route path="/posts" component={PostsPage} />
                   {!this.state.token && <Redirect from="/" to="/login" exact />}
                   {!this.state.token && <Route path="/login" component={LoginPage} />}
                   {this.state.token && <Redirect from="/login" to="/posts" exact />}
-                  <Route path="/posts" component={PostsPage} />
+                  {this.state.token && <Route to={`/profile/${this.state.userId}`} component={ProfilePage} />}
                 </Switch>
               </main>
           </AuthContext.Provider>

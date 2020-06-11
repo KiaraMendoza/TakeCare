@@ -34,9 +34,13 @@ const PostItem = props => {
 };
 
 const PostsList = props => {
-    const posts = props.posts.map(post => {
-        return <PostItem key={post._id} postId={post._id} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={post.creator._id} title={post.title} description={post.description} creator={post.creator.username} createdAt={post.createdAt} image={post.imageUrl}/>
-    })
+        const posts = props.posts.map(post => {
+            if (post.creator) {
+                return <PostItem key={post._id} postId={post._id} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={post.creator._id} title={post.title} description={post.description} creator={post.creator.username} createdAt={post.createdAt} image={post.imageUrl} />
+            } else {
+                return <PostItem key={post._id} postId={post._id} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={props.userData._id} title={post.title} description={post.description} creator={props.userData.username} createdAt={post.createdAt} image={post.imageUrl} />
+            }
+        })
     
     return (
         <div className="posts-list row mx-auto justify-content-around">

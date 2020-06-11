@@ -52,14 +52,22 @@ const transformComment = comment => {
     return {
         ...comment._doc,
         user: user.bind(this, comment._doc.user),
-        post: singlePost.bind(this, comment._doc.event),
+        post: singlePost.bind(this, comment._doc.post),
         createdAt: dateToString(comment._doc.createdAt),
         updatedAt: dateToString(comment._doc.updatedAt)
     }
 };
 
+const transformUser = singleUser => {
+    return {
+        ...singleUser._doc,
+        createdPosts: posts.bind(this, singleUser.createdPosts)
+    };
+};
+
 exports.transformPost = transformPost;
 exports.transformComment = transformComment;
+exports.transformUser = transformUser;
 
 //exports.user = user;
 //exports.posts = posts;

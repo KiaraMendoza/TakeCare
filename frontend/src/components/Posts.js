@@ -172,8 +172,6 @@ class PostsPage extends Component {
             const selectedPost = prevState.posts.find(post => post._id === postId);
             return { selectedPost: selectedPost };
         });
-
-        console.log("showDetailHandler", this.state.selectedPost, postId)
     }
 
     modalCommentHandler = () => {
