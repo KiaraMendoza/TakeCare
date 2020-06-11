@@ -19,12 +19,24 @@ class App extends Component {
     userRol: null
   };
 
+  componentDidMount() {
+    if (!localStorage.getItem("state-token") == null) {
+      this.setState({ token: localStorage.getItem("state-token"), userId: localStorage.getItem("state-userId"), userRol: localStorage.getItem("state-userRol")});
+    }
+  }
+  
   login = (token, userId, userRol, tokenExpiration) => {
     this.setState({ token: token, userId: userId, userRol: userRol });
+    localStorage.setItem("state-token", this.state.token);
+    localStorage.setItem("state-userId", this.state.userId);
+    localStorage.setItem("state-userRol", this.state.userRol);
   };
 
   logout = () => {
     this.setState({ token: null, userId: null, userRol: null });
+    localStorage.setItem("state-token", null);
+    localStorage.setItem("state-userId", null);
+    localStorage.setItem("state-userRol", null);
   };
 
   render() {
