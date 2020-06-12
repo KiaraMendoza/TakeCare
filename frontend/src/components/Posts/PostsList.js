@@ -24,7 +24,7 @@ const PostItem = props => {
                     <div className="list-buttons d-flex justify-content-end position-relative">
                         <button onClick={props.onDetail.bind(this, props.postId)} className="list-see-project btn btn-dark mt-4">Check post</button>
                         {(props.userId === props.creatorId || props.userRol === 'Admin') &&
-                            <button className="list-edit-button btn btn-secondary mt-4">Edit post</button>
+                            <button onClick={props.onEditing.bind(this, props.postId)} className="list-edit-button btn btn-secondary mt-4">Edit post</button>
                         }
                     </div>
                 </div>
@@ -36,9 +36,9 @@ const PostItem = props => {
 const PostsList = props => {
         const posts = props.posts.map(post => {
             if (post.creator) {
-                return <PostItem key={post._id} postId={post._id} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={post.creator._id} title={post.title} description={post.description} creator={post.creator.username} createdAt={post.createdAt} imageUrl={post.imageUrl} />
+                return <PostItem key={post._id} postId={post._id} onEditing={props.onEditing} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={post.creator._id} title={post.title} description={post.description} creator={post.creator.username} createdAt={post.createdAt} imageUrl={post.imageUrl} />
             } else {
-                return <PostItem className="col-md-6" key={post._id} postId={post._id} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={props.userData._id} title={post.title} description={post.description} creator={props.userData.username} createdAt={post.createdAt} image={post.imageUrl} />
+                return <PostItem className="col-md-6" key={post._id} postId={post._id} onEditing={props.onEditing} onDetail={props.onDetail} userId={props.authUserId} userRol={props.authUserRol} creatorId={props.userData._id} title={post.title} description={post.description} creator={props.userData.username} createdAt={post.createdAt} image={post.imageUrl} />
             }
         })
     

@@ -2,7 +2,7 @@
 
 .modal-container {
     width: 100%;
-    position: absolute;
+    position: fixed;
     padding: 0 25px;
     background-color: transparent;
     top: 15vh;
@@ -33,7 +33,10 @@
 }
 
 @media(min-width: $desktopBreak) {
-    
+    .modal-container {
+        max-width: 50%;
+        left: 25%;
+    }
 }
 
 @media(min-width: $tabletBreak) and (max-width: $beforeDesktopBreak) {
