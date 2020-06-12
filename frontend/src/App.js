@@ -11,6 +11,7 @@ import PostsPage from './components/Posts';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProfilePage from './components/Profile/Profile';
+import PostSingle from './components/Posts/PostSingle';
 
 class App extends Component {
   state = {
@@ -20,7 +21,6 @@ class App extends Component {
   };
 
   componentDidMount() {
-    console.log(localStorage.getItem("state-token") == null || localStorage.getItem("state-token") == "null" )
     if (localStorage.getItem("state-token") == null || localStorage.getItem("state-token") == "null" ) {
       console.log('Not logged')
       this.logout();
@@ -51,13 +51,15 @@ class App extends Component {
         <React.Fragment>
           <AuthContext.Provider value={{token: this.state.token, userId: this.state.userId, userRol: this.state.userRol, login: this.login, logout: this.logout}}>
             <Navbar />
-              <main className="main-content container-xl">
+              <main className="main-content container-xl px-0">
                 <Switch>
+                  <Route path="/profile/:id" component={ProfilePage} />
+                  <Route path="/posts/:id" component={PostSingle} />
                   <Route path="/posts" component={PostsPage} />
                   {!this.state.token && <Redirect from="/" to="/login" exact />}
                   {!this.state.token && <Route path="/login" component={LoginPage} />}
                   {this.state.token && <Redirect from="/login" to="/posts" exact />}
-                  {this.state.token && <Route to={`/profile/${this.state.userId}`} component={ProfilePage} />}
+                  {this.state.token && <Route path={`/profile/${this.state.userId}`} component={ProfilePage} />}
                 </Switch>
               </main>
           </AuthContext.Provider>

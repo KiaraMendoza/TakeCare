@@ -7,10 +7,12 @@ import AuthContext from '../context/auth-context';
 import PostsList from '../components/Posts/PostsList';
 import PostForm from '../components/Posts/PostForm';
 import PostDetail from '../components/Posts/PostDetail';
+import PostSingle from './Posts/PostSingle';
 import CategoriesAside from '../components/Asides/Categories';
 import InfoAside from '../components/Asides/Info';
 import '../SCSS/posts.scss';
 import '../SCSS/loading-spinner.scss';
+import { Redirect, NavLink } from 'react-router-dom';
 
 class PostsPage extends Component {
     state = {
@@ -182,7 +184,7 @@ class PostsPage extends Component {
             <React.Fragment>
                 <div className="posts-container row mx-0">
                     <aside className="categories-aside d-none d-md-flex col-md-2"><CategoriesAside /></aside>
-                    <div className="post-page-content col-12 col-md-10 col-xl-8">
+                    <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
                         <div className="posts-control text-center">
                             <h1>Recent Posts</h1>
                             {this.context.token &&
@@ -204,9 +206,7 @@ class PostsPage extends Component {
                             </Modal>
                         }
                         {this.state.selectedPost &&
-                            <Modal title={this.state.selectedPost.title} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalCommentHandler}>
-                                <PostDetail selectedPost={this.state.selectedPost} />
-                            </Modal>
+                            <Redirect to={`/posts/${this.state.selectedPost._id}`} />
                         }
                     </div>
                     <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><InfoAside /></aside>

@@ -16,6 +16,14 @@ module.exports = {
             throw err;
         }
     },
+    postData: async (postId) => {
+        try {
+            const post = await Post.findById(postId);
+            return transformPost(post);
+        } catch (err) {
+            throw err;
+        }
+    },
     //mutation for create posts
     createPost: async (args, req) => {
         if (!req.isAuth) {

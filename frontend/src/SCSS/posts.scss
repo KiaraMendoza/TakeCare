@@ -35,7 +35,10 @@
         border: 0;
     }
     .list-edit-button {
-        right: 160px;
+        right: 120px;
+    }
+    .list-image, .post-image{
+        max-width: 100%;
     }
 }
 
