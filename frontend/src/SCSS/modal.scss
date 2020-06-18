@@ -2,7 +2,8 @@
 
 .modal-container {
     width: 100%;
-    position: absolute;
+    position: -webkit-sticky;
+    position: sticky;
     padding: 0 25px;
     background-color: transparent;
     top: 15vh;

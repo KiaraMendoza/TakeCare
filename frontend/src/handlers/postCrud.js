@@ -216,21 +216,19 @@ class PostCrud extends Component {
         console.log(`Props posts: ${this.props.posts}, Posts state: ${this.state.posts}`)
         return (
             <React.Fragment>
-                <div className="posts-container row mx-0 position-relative">
-                    {(this.state.creating || this.state.editing) &&
-                        <Overlay />
-                    }
-                    {this.state.creating &&
-                        <Modal title="Add a new Post" canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalConfirmHandler}>
-                            <PostForm submitHandler={this.submitHandler} titleEl={this.titleEl} descriptionEl={this.descriptionEl} imageEl={this.imageEl} />
-                        </Modal>
-                    }
-                    {(this.state.editing && this.state.editingPost) &&
-                        <Modal title={`Editing ${this.state.editingPost.title}`} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalEditHandler}>
-                            <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} />
-                        </Modal>
-                    }
-                </div>
+                {(this.state.creating || this.state.editing) &&
+                    <Overlay />
+                }
+                {this.state.creating &&
+                    <Modal title="Add a new Post" canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalConfirmHandler}>
+                        <PostForm submitHandler={this.submitHandler} titleEl={this.titleEl} descriptionEl={this.descriptionEl} imageEl={this.imageEl} />
+                    </Modal>
+                }
+                {(this.state.editing && this.state.editingPost) &&
+                    <Modal title={`Editing ${this.state.editingPost.title}`} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalEditHandler}>
+                        <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} />
+                    </Modal>
+                }
                 <div className="posts-control text-center">
                     <h1>Recent Posts</h1>
                     {this.context.token &&

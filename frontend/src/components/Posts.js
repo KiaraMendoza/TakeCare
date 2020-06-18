@@ -70,7 +70,7 @@ class PostsPage extends Component {
 
         return (
             <React.Fragment>
-                <div className="posts-container row mx-0 position-relative">
+                <div className="posts-container row mx-0 position-relative justify-content-center">
                     <aside className="categories-aside d-none d-md-flex col-md-2"><CategoriesAside /></aside>
                     <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
                         {this.state.isLoading
