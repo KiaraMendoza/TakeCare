@@ -1,9 +1,10 @@
 //Imports from the node_modules
-import React, { Component } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 //Imports from the project
 import Modal from '../modal/modal';
 import Overlay from './Overlay';
 import AuthContext from '../context/auth-context';
+import PostsContext from '../context/posts-context';
 import PostsList from '../components/Posts/PostsList';
 import PostForm from '../components/Posts/PostForm';
 import CategoriesAside from '../components/Asides/Categories';
@@ -11,87 +12,44 @@ import InfoAside from '../components/Asides/Info';
 import '../SCSS/posts.scss';
 import '../SCSS/loading-spinner.scss';
 import { Redirect, NavLink } from 'react-router-dom';
+import { useFetchPosts, startCreatePostsHandler } from '../handlers/postCrud';
 
-class PostsPage extends Component {
-    state = {
-        creating: false,
-        posts: [],
-        isLoading: false,
-        selectedPost: null,
-        editing: false,
-        editingPost: null,
-    }
+const PostsPage = () => {
+    // state = {
+    //     creating: false,
+    //     posts: [],
+    //     isLoading: false,
+    //     selectedPost: null,
+    //     editing: false,
+    //     editingPost: null,
+    // }
 
-    static contextType = AuthContext;
+    useContext(AuthContext);
+    useContext(PostsContext);
 
-    constructor(props) {
-        super(props);
+    // constructor(props) {
+    //     super(props);
 
-        this.titleEl = React.createRef();
-        this.imageEl = React.createRef();
-        this.descriptionEl = React.createRef();
+    //     this.titleEl = React.createRef();
+    //     this.imageEl = React.createRef();
+    //     this.descriptionEl = React.createRef();
 
-        this.editTitleEl = React.createRef();
-        this.editImageEl = React.createRef();
-        this.editDescriptionEl = React.createRef();
-    }
+    //     this.editTitleEl = React.createRef();
+    //     this.editImageEl = React.createRef();
+    //     this.editDescriptionEl = React.createRef();
+    // }
+    const titleEl = useRef(null);
+    const imageEl = useRef(null);
+    const descriptionEl = useRef(null);
+    
+    const editTitleEl = useRef(null);
+    const editImageEl = useRef(null);
+    const editDescriptionEl = useRef(null);
 
-    componentDidMount() {
-        this.fetchPosts();
-    }
-
-    fetchPosts = () => {
-        this.setState({isLoading: true})
-        const requestBody = {
-            query: `
-                query {
-                    posts {
-                        _id
-                        title
-                        description
-                        createdAt
-                        updatedAt
-                        imageUrl
-                        creator {
-                            _id
-                            username
-                            email
-                            rol
-                        }
-                    }
-                }
-            `
-        }
-
-        fetch('http://localhost:8000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Failed!');
-            }
-            return res.json();
-        })
-        .then(resData => {
-            const resPostsData = resData.data.posts;
-            this.setState({ posts: resPostsData, isLoading: false })
-            console.log(this.state.posts);
-
-        })
-        .catch(err => {
-            this.setState({ isLoading: false });
-            throw err;
-        });
-    }
+    const [setPosts] = useFetchPosts();
 
     //Open the modal
-    startCreatePostsHandler = () => {
-        this.setState({ creating: true });
-    }
+    startCreatePostsHandler();
 
     //Create new post
     modalConfirmHandler = () => {
@@ -246,55 +204,49 @@ class PostsPage extends Component {
         });
     }
 
-    modalCommentHandler = () => {
-
-    }
-
     submitHandler = (event) => {
         event.preventDefault();
     }
 
-    render() {
-
-        return (
-            <React.Fragment>
-                <div className="posts-container row mx-0 position-relative">
-                    {(this.state.creating || this.state.editing) &&
-                        <Overlay />
-                    }
-                    {this.state.creating &&
-                        <Modal title="Add a new Post" canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalConfirmHandler}>
-                        <PostForm submitHandler={this.submitHandler} titleEl={this.titleEl} descriptionEl={this.descriptionEl} imageEl={this.imageEl} />
-                        </Modal>
-                    }
-                    {(this.state.editing && this.state.editingPost) &&
-                        <Modal title={`Editing ${this.state.editingPost.title}`} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalEditHandler}>
-                        <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} />
-                        </Modal>
-                    }
-                    <aside className="categories-aside d-none d-md-flex col-md-2"><CategoriesAside /></aside>
-                    <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
-                        <div className="posts-control text-center">
-                            <h1>Recent Posts</h1>
-                            {this.context.token &&
-                                <button className="btn btn-primary" onClick={this.startCreatePostsHandler}>Create a new post!</button>
-                            }
-                        </div>
-                        {this.state.isLoading
-                            ? <div className="text-center"><div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
-                            : <section className="posts-list-container mt-5">
-                                <PostsList onDetail={this.showDetailHandler} onEditing={this.editingPostHandler} posts={this.state.posts} authUserId={this.context.userId} authUserRol={this.context.userRol} />
-                            </section>
-                        }
-                        {this.state.selectedPost &&
-                            <Redirect to={`/posts/${this.state.selectedPost._id}`} />
+    return (
+        <React.Fragment>
+            <div className="posts-container row mx-0 position-relative">
+                {(context.creating || context.editing) &&
+                    <Overlay />
+                }
+                {context.creating &&
+                    <Modal title="Add a new Post" canCancel onCancel={modalCancelHandler} canConfirm onConfirm={modalConfirmHandler}>
+                    <PostForm submitHandler={submitHandler} titleEl={titleEl} descriptionEl={descriptionEl} imageEl={imageEl} />
+                    </Modal>
+                }
+                {(context.editing && context.editingPost) &&
+                    <Modal title={`Editing ${context.editingPost.title}`} canCancel onCancel={modalCancelHandler} canConfirm onConfirm={modalEditHandler}>
+                    <PostForm submitHandler={submitHandler} titleEl={editTitleEl} descriptionEl={editDescriptionEl} imageEl={editImageEl} />
+                    </Modal>
+                }
+                <aside className="categories-aside d-none d-md-flex col-md-2"><CategoriesAside /></aside>
+                <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
+                    <div className="posts-control text-center">
+                        <h1>Recent Posts</h1>
+                        {context.token &&
+                            <button className="btn btn-primary" onClick={startCreatePostsHandler}>Create a new post!</button>
                         }
                     </div>
-                    <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><InfoAside /></aside>
+                    {context.isLoading
+                        ? <div className="text-center"><div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+                        : <section className="posts-list-container mt-5">
+                            <PostsList onDetail={showDetailHandler} onEditing={editingPostHandler} posts={context.posts} authUserId={context.userId} authUserRol={context.userRol} />
+                        </section>
+                    }
+                    {context.selectedPost &&
+                        <Redirect to={`/posts/${context.selectedPost._id}`} />
+                    }
                 </div>
-            </React.Fragment>
-        )
-    }
+                <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><InfoAside /></aside>
+            </div>
+        </React.Fragment>
+    )
+    
 }
 
 export default PostsPage;
