@@ -48,17 +48,6 @@ const transformPost = post => {
     };
 };
 
-const transformUpdatedPost = (post, args) => {
-    return {
-        ...post._doc,
-        createdAt: dateToString(post._doc.createdAt),
-        updatedAt: dateToString(post._doc.updatedAt),
-        title: args.title || post.title,
-        description: args.description || post.description,
-        imageUrl: args.imageUrl || post.imageUrl
-    };
-};
-
 const transformComment = comment => {
     return {
         ...comment._doc,
@@ -77,10 +66,9 @@ const transformUser = singleUser => {
 };
 
 exports.transformPost = transformPost;
-exports.transformUpdatedPost = transformUpdatedPost;
 exports.transformComment = transformComment;
 exports.transformUser = transformUser;
 
-exports.user = user;
-exports.posts = posts;
-exports.singlePost = singlePost;
+//exports.user = user;
+//exports.posts = posts;
+//exports.singlePost = singlePost;
