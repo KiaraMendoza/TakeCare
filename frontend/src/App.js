@@ -6,7 +6,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import './SCSS/App.scss';
 import AuthContext from './context/auth-context';
-import AuthContext from './context/posts-context';
 import LoginPage from './components/Login';
 import PostsPage from './components/Posts';
 import Navbar from './components/Navbar';
@@ -53,17 +52,15 @@ class App extends Component {
           <AuthContext.Provider value={{token: this.state.token, userId: this.state.userId, userRol: this.state.userRol, login: this.login, logout: this.logout}}>
             <Navbar />
               <main className="main-content container-xl px-0">
-                <PostsContext.Provider>
-                  <Switch>
-                    <Route path="/profile/:id" component={ProfilePage} />
-                    <Route path="/posts/:id" component={PostSingle} />
-                    <Route path="/posts" component={PostsPage} />
-                    {!this.state.token && <Redirect from="/" to="/login" exact />}
-                    {!this.state.token && <Route path="/login" component={LoginPage} />}
-                    {this.state.token && <Redirect from="/login" to="/posts" exact />}
-                    {this.state.token && <Route path={`/profile/${this.state.userId}`} component={ProfilePage} />}
-                  </Switch>
-                </PostsContext.Provider>
+                <Switch>
+                  <Route path="/profile/:id" component={ProfilePage} />
+                  <Route path="/posts/:id" component={PostSingle} />
+                  <Route path="/posts" component={PostsPage} />
+                  {!this.state.token && <Redirect from="/" to="/login" exact />}
+                  {!this.state.token && <Route path="/login" component={LoginPage} />}
+                  {this.state.token && <Redirect from="/login" to="/posts" exact />}
+                  {this.state.token && <Route path={`/profile/${this.state.userId}`} component={ProfilePage} />}
+                </Switch>
               </main>
           </AuthContext.Provider>
           <Footer />

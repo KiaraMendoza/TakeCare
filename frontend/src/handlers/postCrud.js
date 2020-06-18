@@ -1,36 +1,36 @@
 import { useState, useEffect, useContext } from 'react';
 
-import PostsContextt from '../handlers/posts-context';
+import PostsContext from '../handlers/posts-context';
  
 //Functions for see detail and comment
-export const showDetailHandler = (postId, postsState) => {
-    useContext(PostsContextt);
-    context.selectedPost = prevState.posts.find(post => post._id === postId);
-    return context.selectedPost;
+const showDetailHandler = (postId) => {
+    this.setState(prevState => {
+        const selectedPost = prevState.posts.find(post => post._id === postId);
+        return { selectedPost: selectedPost };
+    });
 }
 
 //Open the editting modal
-export const editingPostHandler = (postId) => {
-    useContext(PostsContextt);
-    context.isEditing = true;
-    context.editingPost = prevState.posts.find(post => post._id === postId);
-    return context.editingPost;
+const editingPostHandler = (postId) => {
+    this.setState(prevState => {
+        const editingPost = prevState.posts.find(post => post._id === postId);
+        console.log("Editing Post... " + editingPost)
+        return { editingPost: editingPost, editing: true };
+    });
 }
 
 //Make a comment
-export const useModalCommentHandler = () => {
+const modalCommentHandler = () => {
 }
 
 //Prevent default submit
-export const SubmitHandler = (event) => {
+const submitHandler = (event) => {
     event.preventDefault();
 }
 
 //Edit a post
-export const useModalEditHandler = () => {
-    useContext(PostsContextt);
-    context.isEditing = true;
-    const [updatedPostData, setUpdatedPostData] = useState(null);
+const modalEditHandler = () => {
+    this.setState({ editing: true });
     //We get the posts's data using React references on the inputs
     const title = this.editTitleEl.current.value;
     const imageUrl = this.editImageEl.current.value;
@@ -73,31 +73,23 @@ export const useModalEditHandler = () => {
             return res.json();
         })
         .then(resData => {
-            console.log(resData.data);
             const updatedPost = resData.data.updatePost;
-            setUpdatedPostData(updatedPost);
-            context.isEditing = false;
+            console.log(resData.data)
         })
         .catch(err => {
-            setIsEditing(false);
             throw err;
         });
-    return [updatedPostData];
+
+    this.setState({ editing: false });
 }
 
 //Open the modal
-export const startCreatePostsHandler = () => {
-    useContext(PostsContext);
-    return context.isCreating = true;
+const startCreatePostsHandler = () => {
+    this.setState({ creating: true });
 }
 
 //Create new post
-export const useModalConfirmHandler = (AuthToken) => {
-    useContext(PostsContext);
-    context.isCreating = true;
-    const [createdPost, setCreatedPost] = useState(null);
-    const [updatedPosts, setUpdatedPosts] = useState(context.posts);
-
+const modalConfirmHandler = () => {
     //We get the posts's data using React references on the inputs
     const title = this.titleEl.current.value;
     const imageUrl = this.imageEl.current.value;
@@ -135,7 +127,7 @@ export const useModalConfirmHandler = (AuthToken) => {
     }
 
     //Using our AuthContext we can get the user's token
-    const token = AuthToken;
+    const token = this.context.token;
 
     //We need to use our token when creating posts
     fetch('http://localhost:8000/graphql', {
@@ -154,42 +146,29 @@ export const useModalConfirmHandler = (AuthToken) => {
             return res.json();
         })
         .then(resData => {
-            // const createdPost = resData.data.createPost;
-            // this.setState(prevState => {
-            //     const updatedPosts = [...prevState.posts];
-            //     updatedPosts.push(createdPost);
+            const createdPost = resData.data.createPost;
+            this.setState(prevState => {
+                const updatedPosts = [...prevState.posts];
+                updatedPosts.push(createdPost);
 
-            //     return { posts: updatedPosts };
-            // });
-            setCreatedPost(resData.data.createdPost);
-            setUpdatedPosts(prevState => {
-                [...prevState, createdPost]
+                return { posts: updatedPosts };
             });
-            context.isCreating = false;
-            return;
         })
         .catch(err => {
             throw err;
         });
 
-    return [createdPost, updatedPosts];
+    this.setState({ creating: false });
 }
 
 //Close the modal
-export const useModalCancelHandler = () => {
-    useContext(PostsContext);
-    context.isCreating = false;
-    context.isEditing = false; 
-    context.selectedPost = null;
-    return;
-};
+const modalCancelHandler = () => {
+    this.setState({ creating: false, selectedPost: null, editing: false });
+}
 
 //Get all posts
-export const useFetchPosts = () => {
-    useContext(PostsContext);
-    context.IsLoading = true;
-    const [postsState, setPosts] = useState(null);
-    
+const fetchPosts = () => {
+    this.setState({ isLoading: true })
     const requestBody = {
         query: `
                 query {
@@ -210,33 +189,40 @@ export const useFetchPosts = () => {
                 }
             `
     }
-    useEffect(() => { 
-        fetch('http://localhost:8000/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        .then(res => {
-            if (res.status !== 200 && res.status !== 201) {
-                throw new Error('Failed!');
-            }
-            return res.json();
-        })
-        .then(resData => {
-            const resPostsData = resData.data.posts;
-            setPosts(resPostsData);
-            context.posts = postsState;
-            context.IsLoading = false;
 
-        })
-        .catch(err => {
-            context.IsLoading = false;
-            throw err;
-        });
-    }, []);
-    return [setPosts];
+    fetch('http://localhost:8000/graphql', {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+            throw new Error('Failed!');
+        }
+        return res.json();
+    })
+    .then(resData => {
+        const resPostsData = resData.data.posts;
+        this.setState({ posts: resPostsData, isLoading: false })
+        console.log(this.state.posts);
+
+    })
+    .catch(err => {
+        this.setState({ isLoading: false });
+        throw err;
+    });
 }
+
+exports.fetchPosts = fetchPosts;
+exports.modalConfirmHandler = modalConfirmHandler;
+exports.startCreatePostsHandler = startCreatePostsHandler;
+exports.modalEditHandler = modalEditHandler;
+exports.modalCommentHandler = modalCommentHandler;
+exports.editingPostHandler = editingPostHandler;
+exports.showDetailHandler = showDetailHandler;
+exports.submitHandler = submitHandler;
+exports.modalCancelHandler = modalCancelHandler;
 
 //import { fetchPosts, modalConfirmHandler, modalCancelHandler, modalEditHandler, modalCoommentHandler, showDetailHandler, editingPostHandler, submitHandler, startCreatePostsHandler } from '../handlers/postCrud';
