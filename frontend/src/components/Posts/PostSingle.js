@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 //Imports from the project
 import '../../SCSS/posts.scss';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 class PostSingle extends Component {
     state = {
@@ -78,6 +78,7 @@ class PostSingle extends Component {
             <React.Fragment>
                 {this.state.hasError && <Redirect to="/404" />}
                 <div className="post-single-container container-xl">
+                    <Link to="/posts">Go back to posts page</Link>
                     <div className="post-data">
                         <p>{this.state.postData.title}</p>
                         <p>{this.state.postData.description}</p>

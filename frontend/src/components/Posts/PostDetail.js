@@ -1,5 +1,6 @@
 //Imports from the node_modules
 import React from 'react';
+import { Link } from 'react-router-dom';
 //Imports from the project
 import '../../SCSS/posts.scss';
 

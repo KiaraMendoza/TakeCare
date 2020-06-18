@@ -6,6 +6,7 @@ import PostsList from '../Posts/PostsList';
 import AuthContext from '../../context/auth-context';
 import '../../SCSS/profile.scss';
 import '../../SCSS/loading-spinner.scss';
+import PostCrud from '../../handlers/postCrud';
 
 class ProfilePage extends Component {
     state = {
@@ -45,6 +46,13 @@ class ProfilePage extends Component {
                             createdAt
                             updatedAt
                             imageUrl
+                            creator {
+                                _id
+                                username
+                                email
+                                rol
+                                userProfileImg
+                            }
                         }
                     }
                 }
@@ -77,16 +85,9 @@ class ProfilePage extends Component {
             throw err;
         });
     }
-    
-    showDetailHandler = (postId) => {
-        this.setState(prevState => {
-            const selectedPost = prevState.posts.find(post => post._id === postId);
-            return { selectedPost: selectedPost };
-        });
-    }
+
     
     render() {
-        console.log("Url params " + this.props.match.params.id);
         return (
             <React.Fragment>
                 {this.state.hasError && <Redirect to="/404" />}
@@ -102,11 +103,9 @@ class ProfilePage extends Component {
                         </div>
                     </div>
                     <div className="profile-posts">
-                        {(this.state.isLoading)
+                        {this.state.isLoading
                             ? <div className="text-center"><div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
-                            : <section className="posts-list-container mt-5">
-                                <PostsList onDetail={this.showDetailHandler} posts={this.state.posts} userData={this.state.userData} authUserId={this.context.userId} authUserRol={this.context.userRol} />
-                            </section>
+                            : <PostCrud posts={this.state.posts} userData={this.state.userData} />
                         }
                     </div>
                 </div>
