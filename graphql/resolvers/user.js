@@ -60,25 +60,3 @@ module.exports = {
         }
     },
 };
-
-/* Example of login query */
-/*
-query {
-  login(email: "kiara@test.com", password: "kiara1234"){
-    userId
-    userRol
-    token
-    tokenExpiration
-  }
-}
-*/
-
-/* Example of single user query */
-/*
-query {
-  userData(_id : "5ee0e302c03420441cd40b74") {
-    username
-    email
-  }
-}
-*/

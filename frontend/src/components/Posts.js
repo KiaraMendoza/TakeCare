@@ -27,6 +27,7 @@ class PostsPage extends Component {
                         _id
                         title
                         description
+                        category
                         createdAt
                         updatedAt
                         imageUrl
@@ -75,7 +76,7 @@ class PostsPage extends Component {
                     <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
                         {this.state.isLoading
                             ? <div className="text-center"><div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
-                            : <PostCrud posts={this.state.posts} />
+                            : <PostCrud posts={this.state.posts} canCreatePost />
                         }
                     </div>
                     <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><InfoAside /></aside>

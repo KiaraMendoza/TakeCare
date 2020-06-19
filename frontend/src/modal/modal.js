@@ -16,6 +16,7 @@ const modal = props => {
                     {props.children}
                 </section>
                 <section className="modal-actions d-flex justify-content-end py-2">
+                    {props.canDelete && <button className="btn btn-danger mr-3" onClick={props.onDelete}>Delete</button>}
                     {props.canCancel && <button className="btn btn-secondary mr-3" onClick={props.onCancel}>Cancel</button>}
                     {props.canConfirm && <button className="btn btn-success mr-3" onClick={props.onConfirm}>Confirm</button>}
                 </section>

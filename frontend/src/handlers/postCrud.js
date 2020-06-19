@@ -69,14 +69,14 @@ class PostCrud extends Component {
         const requestBody = {
             query: `
                 mutation {
-                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: "${imageUrl}"} ) {
+                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "Funny" } ) {
                         _id
                         title
                         description
+                        category
                         createdAt
                         updatedAt
                         imageUrl
-                        createdAt
                         creator {
                             _id
                             username
@@ -139,13 +139,63 @@ class PostCrud extends Component {
         const requestBody = {
             query: `
                 mutation {
-                    updatePost(_id: "${postId}", title: "${title}", description: "${description}", imageUrl: "${imageUrl}" ) {
+                    updatePost(_id: "${postId}", title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "Funny" ) {
                         _id
                         title
                         description
+                        category
                         imageUrl
                         createdAt
                         updatedAt
+                    }
+                }
+            `
+        }
+
+        //Using our AuthContext we can get the user's token
+        const token = this.context.token;
+
+        //We need to use our token when creating/editing posts
+        fetch('http://localhost:8000/graphql', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Failed!');
+            }
+            return res.json();
+        })
+        .then(resData => {
+            const updatedPost = resData.data.updatePost;
+            console.log(resData.data)
+            return updatedPost;
+        })
+        .catch(err => {
+            throw err;
+        });
+
+        this.setState({ editing: false });
+    }
+
+    //Delete a post
+    modalDeleteHandler = () => {
+        this.setState({ editing: true });
+
+        const postId = this.state.editingPost._id;
+        //For editing a post
+        const requestBody = {
+            query: `
+                mutation {
+                    deletePost(_id: "${postId}") {
+                        _id
+                        creator {
+                            _id
+                        }
                     }
                 }
             `
@@ -167,11 +217,14 @@ class PostCrud extends Component {
                 if (res.status !== 200 && res.status !== 201) {
                     throw new Error('Failed!');
                 }
-                return res.json();
+                const resToJson = res.json();
+                console.log(resToJson);
+                return resToJson;
             })
             .then(resData => {
-                const updatedPost = resData.data.updatePost;
-                console.log(resData.data)
+                const deletedPost = resData.data;
+                console.log(`Deleted post: ${JSON.stringify(resData.data)}`);
+                return deletedPost;
             })
             .catch(err => {
                 throw err;
@@ -186,7 +239,7 @@ class PostCrud extends Component {
     }
 
 
-    //Functions for see detail and comment
+    //Select a post to then check the PostSingle page of that post
     showDetailHandler = (postId) => {
         this.setState(prevState => {
             const selectedPost = prevState.posts.find(post => post._id === postId);
@@ -213,7 +266,7 @@ class PostCrud extends Component {
     }
 
     render() {
-        console.log(`Props posts: ${this.props.posts}, Posts state: ${this.state.posts}`)
+        // console.log(`Props posts: ${this.props.posts}, Posts state: ${this.state.posts}`)
         return (
             <React.Fragment>
                 {(this.state.creating || this.state.editing) &&
@@ -225,16 +278,18 @@ class PostCrud extends Component {
                     </Modal>
                 }
                 {(this.state.editing && this.state.editingPost) &&
-                    <Modal title={`Editing ${this.state.editingPost.title}`} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalEditHandler}>
+                    <Modal title={`Editing ${this.state.editingPost.title}`} canDelete onDelete={this.modalDeleteHandler} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalEditHandler}>
                         <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} />
                     </Modal>
                 }
-                <div className="posts-control text-center">
-                    <h1>Recent Posts</h1>
-                    {this.context.token &&
-                        <button className="btn btn-primary" onClick={this.startCreatePostsHandler}>Create a new post!</button>
-                    }
-                </div>
+                {this.props.canCreatePost &&
+                    <div className="posts-control text-center">
+                        <h1>Recent Posts</h1>
+                        {this.context.token &&
+                            <button className="btn btn-primary" onClick={this.startCreatePostsHandler}>Create a new post!</button>
+                        }
+                    </div>
+                }
                 <section className="posts-list-container mt-5">
                     <PostsList onDetail={this.showDetailHandler} onEditing={this.editingPostHandler} posts={this.state.posts} userData={this.state.userData} authUserId={this.context.userId} authUserRol={this.context.userRol} />
                 </section>

@@ -78,7 +78,9 @@ class PostSingle extends Component {
             <React.Fragment>
                 {this.state.hasError && <Redirect to="/404" />}
                 <div className="post-single-container container-xl">
-                    <Link to="/posts">Go back to posts page</Link>
+                    <div className="go-to-post-page">
+                        <Link className="go-back-button" to="/posts">To posts page</Link>
+                    </div>
                     <div className="post-data">
                         <p>{this.state.postData.title}</p>
                         <p>{this.state.postData.description}</p>

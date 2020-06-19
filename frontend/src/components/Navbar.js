@@ -14,7 +14,7 @@ const Navbar = props => {
                 return (
                     <header className="main-navigation">
                         <div className="navbar-logo">
-                            <h1>TakeCare!</h1>
+                            <NavLink to="/posts"><h1>TakeCare!</h1></NavLink>
                         </div>
                         <nav className="navbar-list">
                             <ul>
