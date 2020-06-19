@@ -50,6 +50,13 @@ module.exports = buildSchema(`
         likedComments: [PostLike!]
     }
 
+    type Category {
+        _id: ID!
+        name: String!
+        description: String!
+        icon: String!
+    }
+
     type AuthData {
         userId: ID!
         userRol: String!
@@ -64,11 +71,10 @@ module.exports = buildSchema(`
         imageUrl: String
     }
 
-    input updatePostInput {
-        title: String
-        description: String
-        imageUrl: String
-        category: String
+    input CategoryInput {
+        name: String!
+        description: String!
+        icon: String!
     }
 
     input UserInput {
@@ -83,6 +89,7 @@ module.exports = buildSchema(`
         userData(_id: String): User!
         postData(_id: String): Post!
         login(email: String!, password: String!):AuthData!
+        categories: [Category!]!
     }
 
     type RootMutation {
@@ -90,6 +97,7 @@ module.exports = buildSchema(`
         updatePost(_id: String!, title: String, description: String, imageUrl: String, category: String ): Post
         deletePost(_id: String!): Post
         createUser(userInput: UserInput): User
+        createCategory(categoryInput: CategoryInput): Category
     }
 
     schema {

@@ -29,10 +29,12 @@ class PostCrud extends Component {
         this.titleEl = React.createRef();
         this.imageEl = React.createRef();
         this.descriptionEl = React.createRef();
+        this.categoryEl = React.createRef();
 
         this.editTitleEl = React.createRef();
         this.editImageEl = React.createRef();
         this.editDescriptionEl = React.createRef();
+        this.editCategoryEl = React.createRef();
     }
     
     componentDidMount() {
@@ -53,6 +55,7 @@ class PostCrud extends Component {
         const title = this.titleEl.current.value;
         const imageUrl = this.imageEl.current.value;
         const description = this.descriptionEl.current.value;
+        const category = this.categoryEl.current.value;
 
         if (title.trim().length === 0 || description.trim().length === 0) {
             console.log('Something bad!');
@@ -69,7 +72,7 @@ class PostCrud extends Component {
         const requestBody = {
             query: `
                 mutation {
-                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "Funny" } ) {
+                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: ${category} } ) {
                         _id
                         title
                         description
@@ -132,6 +135,7 @@ class PostCrud extends Component {
         const title = this.editTitleEl.current.value;
         const imageUrl = this.editImageEl.current.value;
         const description = this.editDescriptionEl.current.value;
+        const category = this.editCategoryEl.current.value;
         const postId = this.state.editingPost._id;
 
         console.log(postId + " " + title + " " + description + " " + imageUrl);
@@ -139,7 +143,7 @@ class PostCrud extends Component {
         const requestBody = {
             query: `
                 mutation {
-                    updatePost(_id: "${postId}", title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "Funny" ) {
+                    updatePost(_id: "${postId}", title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: ${category} ) {
                         _id
                         title
                         description
@@ -274,12 +278,12 @@ class PostCrud extends Component {
                 }
                 {this.state.creating &&
                     <Modal title="Add a new Post" canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalConfirmHandler}>
-                        <PostForm submitHandler={this.submitHandler} titleEl={this.titleEl} descriptionEl={this.descriptionEl} imageEl={this.imageEl} />
+                        <PostForm submitHandler={this.submitHandler} titleEl={this.titleEl} descriptionEl={this.descriptionEl} imageEl={this.imageEl} categoryEl={this.categoryEl} />
                     </Modal>
                 }
                 {(this.state.editing && this.state.editingPost) &&
                     <Modal title={`Editing ${this.state.editingPost.title}`} canDelete onDelete={this.modalDeleteHandler} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalEditHandler}>
-                        <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} />
+                        <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} categoryEl={this.categoryEl}/>
                     </Modal>
                 }
                 {this.props.canCreatePost &&

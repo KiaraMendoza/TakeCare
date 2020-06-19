@@ -3,7 +3,6 @@ const Post = require('../../models/post');
 const Comment = require('../../models/comment');
 const User = require('../../models/user'); 
 const { transformPost, user, transformUpdatedPost } = require('./merge');
-const { update } = require('../../models/post');
 
 module.exports = {
     //query for all posts
@@ -75,14 +74,13 @@ module.exports = {
         if (!req.isAuth) {
             throw new Error('You don\'t have permission to do that');
         }
-        function remove(array, element) {
-            return array.filter(el => el !== element);
-        }
 
         const getPostToDelete = await Post.findById(args._id);
         const creator = await User.findById(getPostToDelete.creator);
+        
         let indexPostToDelete = creator.createdPosts.indexOf(args._id);
         const deletePostOnCreator = await creator.createdPosts.slice(indexPostToDelete, 1);
+
         console.log(deletePostOnCreator)
 
         try {

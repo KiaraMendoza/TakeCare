@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import './SCSS/App.scss';
 import AuthContext from './context/auth-context';
+import CategoriesContext from './context/categories-context';
 import LoginPage from './components/Login';
 import PostsPage from './components/Posts';
 import Navbar from './components/Navbar';
@@ -17,7 +18,12 @@ class App extends Component {
   state = {
     token: null,
     userId: null,
-    userRol: null
+    userRol: null,
+    categories: [],
+  };
+
+  setCategories = categories => {
+    this.setState({ categories });
   };
 
   componentDidMount() {
@@ -50,7 +56,8 @@ class App extends Component {
       <BrowserRouter>
         <React.Fragment>
           <AuthContext.Provider value={{token: this.state.token, userId: this.state.userId, userRol: this.state.userRol, login: this.login, logout: this.logout}}>
-            <Navbar />
+            <CategoriesContext.Provider value={{ categories: this.state.categories, setCategories: this.setCategories}}>
+              <Navbar />
               <main className="main-content container-xl px-0">
                 <Switch>
                   <Route path="/profile/:id" component={ProfilePage} />
@@ -62,6 +69,7 @@ class App extends Component {
                   {this.state.token && <Route path={`/profile/${this.state.userId}`} component={ProfilePage} />}
                 </Switch>
               </main>
+            </CategoriesContext.Provider>
           </AuthContext.Provider>
           <Footer />
         </React.Fragment>

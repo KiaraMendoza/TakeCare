@@ -9,7 +9,7 @@ import '../SCSS/navbar.scss';
 const Navbar = props => {
     return (
         <AuthContext.Consumer>
-            {/* Using the AuthContext to access some app states like if token */}
+            {/* Using the AuthContext to access some app states only if token */}
             {(context) => {
                 return (
                     <header className="main-navigation">
