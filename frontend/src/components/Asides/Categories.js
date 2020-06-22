@@ -24,8 +24,7 @@ const CategoriesAside = props => {
     //Update categoriesContext when page's refresh or when added a new category.
     useEffect(() => {
         fetchCategories();
-        console.log(`Fetched categories: ${categories}`)
-    }, categories);
+    }, []);
 
     //Method to fetch all categories:
     const fetchCategories = () => {
@@ -64,7 +63,7 @@ const CategoriesAside = props => {
             //console.log(`categories: ${resData.data.categories}`);
             setIsLoading(false);
             setCategoriesList(resData.data.categories);
-            setCategories(categoriesList);
+            setCategories(resData.data.categories);
             return categoriesList;
         })
         .catch(err => {
@@ -125,7 +124,6 @@ const CategoriesAside = props => {
         })
         .then(res => {
             if (res.status !== 200 && res.status !== 201) {
-                console.log('Error al crear')
                 throw new Error('Failed!');
             }
             return res.json();
@@ -138,7 +136,9 @@ const CategoriesAside = props => {
             setCategoriesList(prevState => {
                 return [...prevState, createdCategory];
             });
-            setCategories(categoriesList);
+            setCategories(prevState => {
+                return [...prevState, createdCategory];
+            });
             return createdCategory;
         })
         .catch(err => {
@@ -152,22 +152,28 @@ const CategoriesAside = props => {
 
     return (
         <React.Fragment>
-            <div className="aside-content px-4 py-5 mt-5">
-                <div className="categories-list">
-                    <div className="categories d-flex flex-column">
-                        {(auth.token && auth.userRol === 'Admin') &&
-                            <button className="btn btn-primary" onClick={startCreatingHandler}>Add new category</button>
-                        }
-                        {isCreating &&
-                            <Modal title="Adding new category..." canCancel onCancel={modalCancelHandler} canConfirm onConfirm={createCategory}>
-                                <CategoryForm nameEl={nameEl} descriptionEl={descriptionEl} iconEl={iconEl} />
-                            </Modal>
-                        }
-                        <hr />
-                        {categoriesList.map(category => <p key={category._id}>{category.name}</p>)}
-                    </div>
-                </div>
-            </div>
+            <CategoriesContext.Consumer>
+                {(context) => {
+                    return (
+                        <div className="aside-content px-4 py-5 mt-5">
+                            <div className="categories-list">
+                                <div className="categories d-flex flex-column">
+                                    {(auth.token && auth.userRol === 'Admin') &&
+                                        <button className="btn btn-primary" onClick={startCreatingHandler}>Add new category</button>
+                                    }
+                                    {isCreating &&
+                                        <Modal title="Adding new category..." canCancel onCancel={modalCancelHandler} canConfirm onConfirm={createCategory}>
+                                            <CategoryForm nameEl={nameEl} descriptionEl={descriptionEl} iconEl={iconEl} />
+                                        </Modal>
+                                    }
+                                    <hr />
+                                    {categoriesList.map(category => <p key={category._id}><i className={category.icon}/>{category.name}</p>)}
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }}
+            </CategoriesContext.Consumer>
         </React.Fragment>
     );
 };

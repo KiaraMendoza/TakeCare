@@ -15,15 +15,16 @@ import ProfilePage from './components/Profile/Profile';
 import PostSingle from './components/Posts/PostSingle';
 
 class App extends Component {
+  setCategories = categories => {
+    this.setState({ categories });
+  };
+  
   state = {
     token: null,
     userId: null,
     userRol: null,
     categories: [],
-  };
-
-  setCategories = categories => {
-    this.setState({ categories });
+    setCategories: this.setCategories,
   };
 
   componentDidMount() {
