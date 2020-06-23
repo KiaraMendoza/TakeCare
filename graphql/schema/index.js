@@ -90,6 +90,7 @@ module.exports = buildSchema(`
         postData(_id: String): Post!
         login(email: String!, password: String!):AuthData!
         categories: [Category!]!
+        categoryData(name: String!): Category!
     }
 
     type RootMutation {

@@ -10,6 +10,7 @@ import PostForm from '../components/Posts/PostForm';
 import { Redirect, NavLink } from 'react-router-dom';
 import '../SCSS/posts.scss';
 import '../SCSS/loading-spinner.scss';
+//import useFetchWithToken from '../helpers/fetchWithToken';
  
 class PostCrud extends Component {
     state = {
@@ -283,7 +284,7 @@ class PostCrud extends Component {
                 }
                 {(this.state.editing && this.state.editingPost) &&
                     <Modal title={`Editing ${this.state.editingPost.title}`} canDelete onDelete={this.modalDeleteHandler} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalEditHandler}>
-                        <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} categoryEl={this.categoryEl}/>
+                        <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} categoryEl={this.editCategoryEl}/>
                     </Modal>
                 }
                 {this.props.canCreatePost &&

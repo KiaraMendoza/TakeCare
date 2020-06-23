@@ -13,6 +13,15 @@ module.exports = {
             throw err;
         }
     },
+    categoryData: async (args) => {
+        try {
+            const categories = await Category.find();
+            return categories.find(category =>
+                category.name == args.name);
+        } catch (err) {
+            throw err;
+        }
+    },
     //mutation for create categories
     createCategory: async (args, req) => {
         if (!req.isAuth && !req.userRol === 'Admin') {

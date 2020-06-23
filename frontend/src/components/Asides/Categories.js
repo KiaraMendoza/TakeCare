@@ -1,4 +1,5 @@
 import React, {useState, useContext, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 //Imports from the project
 import '../../SCSS/posts.scss';
 import authContext from '../../context/auth-context';
@@ -167,7 +168,7 @@ const CategoriesAside = props => {
                                         </Modal>
                                     }
                                     <hr />
-                                    {categoriesList.map(category => <p key={category._id}><i className={category.icon}/>{category.name}</p>)}
+                                    {categoriesList.map(category => <Link to={`/category/${category.name}`} key={category._id}><i className={category.icon}/>{category.name}</Link>)}
                                 </div>
                             </div>
                         </div>

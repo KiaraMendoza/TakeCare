@@ -78,15 +78,15 @@ module.exports = {
         const getPostToDelete = await Post.findById(args._id);
         const creator = await User.findById(getPostToDelete.creator);
         
-        let indexPostToDelete = creator.createdPosts.indexOf(args._id);
-        const deletePostOnCreator = await creator.createdPosts.slice(indexPostToDelete, 1);
+        //let indexPostToDelete = creator.createdPosts.indexOf(args._id);
+        const updatedCreatorPosts = await creator.createdPosts.filter(post => post !== args._id);
 
-        console.log(deletePostOnCreator)
+        console.log(`updatedCreatorPosts: ${updatedCreatorPosts}, indexPostToDelete: {indexPostToDelete}`)
 
         try {
             // const deletePostOnCreator = await remove(creator.createdPosts, args._id);
             const deletedPost = await Post.findByIdAndDelete(args._id);
-            console.log(`deletedPost: ${deletedPost}, creator: ${creator}, deletingPostId: ${args._id}`);
+            console.log(`deletedPost: ${deletedPost}, creator: ${creator}, deletingPostId: ${args._id}, indexPostToDelete: ${indexPostToDelete}`);
             return deletedPost;
         } catch (err) {
             throw err;

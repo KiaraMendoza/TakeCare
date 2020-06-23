@@ -13,6 +13,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProfilePage from './components/Profile/Profile';
 import PostSingle from './components/Posts/PostSingle';
+import {useCategorySingle} from './components/Categories/CategorySingle';
 
 class App extends Component {
   setCategories = categories => {
@@ -63,6 +64,7 @@ class App extends Component {
                 <Switch>
                   <Route path="/profile/:id" component={ProfilePage} />
                   <Route path="/posts/:id" component={PostSingle} />
+                  <Route path="/category/:name" component={useCategorySingle} />
                   <Route path="/posts" component={PostsPage} />
                   {!this.state.token && <Redirect from="/" to="/login" exact />}
                   {!this.state.token && <Route path="/login" component={LoginPage} />}

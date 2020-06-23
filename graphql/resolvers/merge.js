@@ -55,7 +55,8 @@ const transformUpdatedPost = (post, args) => {
         updatedAt: dateToString(post._doc.updatedAt),
         title: args.title || post.title,
         description: args.description || post.description,
-        imageUrl: args.imageUrl || post.imageUrl
+        imageUrl: args.imageUrl || post.imageUrl,
+        category: args.category || post.category,
     };
 };
 
