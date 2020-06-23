@@ -9,7 +9,7 @@ import '../SCSS/loading-spinner.scss';
 import PostCrud from '../handlers/postCrud';
 import { useFetchToBack } from '../helpers/fetchToBack';
 
-const PostsPage = () =>{
+const PostsPage = () => {
 
     const [postsList, setPosts] = useState([]);
     
@@ -36,22 +36,30 @@ const PostsPage = () =>{
     }
 
     const [isLoading, fetchedData] = useFetchToBack(requestBody);
-    let fetchedPosts = [];
+    
+    let PostsPageContent = () => {
+        return (
+            <React.Fragment>
+                {(isLoading) 
+                    ? <div className="text-center"><div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+                    : <PostCrud posts={postsList ? postsList : []} canCreatePost />
+                }
+            </React.Fragment>
+        )
+    }
 
     useEffect(() => {
-        fetchedPosts = fetchedData.posts ? fetchedData.posts : [];
-    }, [fetchedData])
+        setPosts(fetchedData.posts);
+        console.log(`fetched Posts: {JSON.stringify(fetchedData.posts)}, PostsPageContent: ${PostsPageContent}`)
+    }, [fetchedData]);
 
     return (
         <React.Fragment>
             <div className="posts-container row mx-0 position-relative justify-content-center">
                 <aside className="categories-aside d-none d-md-flex col-md-2"><CategoriesAside /></aside>
-                <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
-                    {isLoading
-                        ? <div className="text-center"><div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
-                        : <PostCrud posts={fetchedPosts} canCreatePost />
-                    }
-                </div>
+                    <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
+                        <PostsPageContent/>
+                    </div>
                 <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><InfoAside /></aside>
             </div>
         </React.Fragment>

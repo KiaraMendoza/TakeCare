@@ -72,7 +72,7 @@ class PostCrud extends Component {
         const requestBody = {
             query: `
                 mutation {
-                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: ${category} } ) {
+                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "${category}" } ) {
                         _id
                         title
                         description
@@ -143,7 +143,7 @@ class PostCrud extends Component {
         const requestBody = {
             query: `
                 mutation {
-                    updatePost(_id: "${postId}", title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: ${category} ) {
+                    updatePost(_id: "${postId}", title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "${category}" ) {
                         _id
                         title
                         description
@@ -270,7 +270,7 @@ class PostCrud extends Component {
     }
 
     render() {
-        // console.log(`Props posts: ${this.props.posts}, Posts state: ${this.state.posts}`)
+        console.log(`Props posts: ${this.props.posts}, Posts state: ${this.state.posts}`)
         return (
             <React.Fragment>
                 {(this.state.creating || this.state.editing) &&
