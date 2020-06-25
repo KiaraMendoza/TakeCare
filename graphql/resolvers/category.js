@@ -1,5 +1,6 @@
 //Requires from the project
 const Category = require('../../models/category');
+const Post = require('../../models/post');
 
 module.exports = {
     //query for all categories
@@ -16,8 +17,11 @@ module.exports = {
     categoryData: async (args) => {
         try {
             const categories = await Category.find();
-            return categories.find(category =>
+            const matchedCategory = categories.find(category =>
                 category.name == args.name);
+            // const posts = await Post.find();
+            // const matchedPosts = posts.filter(post => post.category.name == args.name);
+            return matchedCategory;
         } catch (err) {
             throw err;
         }
@@ -27,12 +31,18 @@ module.exports = {
         if (!req.isAuth && !req.userRol === 'Admin') {
             throw new Error('You don\'t have permission to do that');
         }
+        const categories = await Category.find();
+        const existingCategory = await Category.findOne({ name: args.CategoryInput.name });
+
+        if (existingCategory) {
+            throw new Error('Category exists already.');
+        }
+
         const category = new Category({
             name: args.categoryInput.name,
             description: args.categoryInput.description,
             icon: args.categoryInput.icon,
         });
-        console.log(`category back-end: ${category}`)
         try {
             const result = await category.save();
             return category;

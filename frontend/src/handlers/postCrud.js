@@ -77,7 +77,10 @@ class PostCrud extends Component {
                         _id
                         title
                         description
-                        category
+                        category {
+                            _id
+                            name
+                        }
                         createdAt
                         updatedAt
                         imageUrl
@@ -106,7 +109,7 @@ class PostCrud extends Component {
         })
             .then(res => {
                 if (res.status !== 200 && res.status !== 201) {
-                    console.log('Error al crear')
+                    console.log('Error al crear');
                     throw new Error('Failed!');
                 }
                 return res.json();
@@ -148,7 +151,10 @@ class PostCrud extends Component {
                         _id
                         title
                         description
-                        category
+                        category {
+                            _id
+                            name
+                        }
                         imageUrl
                         createdAt
                         updatedAt
@@ -200,6 +206,10 @@ class PostCrud extends Component {
                         _id
                         creator {
                             _id
+                        }
+                        category {
+                            _id
+                            name
                         }
                     }
                 }

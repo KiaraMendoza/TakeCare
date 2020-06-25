@@ -27,7 +27,7 @@ const PostForm = props => {
                          <div className="mt-4 d-flex flex-column mt-4">
                              <label htmlFor="category">Category</label>
                              <select className="form-control" ref={props.categoryEl}>
-                                 {context.categories.map(category => <option key={category._id}>{category.name}</option>)}
+                                 {context.categories.map(category => <option key={category._id} value={category._id}>{category.name}</option>)}
                              </select>
                          </div>
                          <div className="mt-4 d-flex flex-column mt-4">

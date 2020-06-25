@@ -6,7 +6,7 @@ module.exports = buildSchema(`
         _id: ID!
         title: String!
         description: String!
-        category: String
+        category: Category!
         imageUrl: String
         createdAt: String!
         updatedAt: String!
@@ -55,6 +55,7 @@ module.exports = buildSchema(`
         name: String!
         description: String!
         icon: String!
+        posts: [Post!]
     }
 
     type AuthData {

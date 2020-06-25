@@ -1,6 +1,7 @@
 //Requires from the project
 const Post = require('../../models/post');
 const Comment = require('../../models/comment');
+const Category = require('../../models/category');
 const User = require('../../models/user'); 
 const { transformPost, user, transformUpdatedPost } = require('./merge');
 
@@ -40,12 +41,22 @@ module.exports = {
         try {
             const result = await post.save();
             createdPost = transformPost(result);
+
+            //Save post data on creator/user info
             const creator = await User.findById(req.userId);
             if (!creator) {
                 throw new Error('User not found.')
             }
             creator.createdPosts.push(post);
             await creator.save();
+            //Save post data on category info
+            const category = await Category.findById(createdPost.category._id);
+            if (!category) {
+                throw new Error('Category not found.')
+            }
+            category.posts.push(post);
+            await category.save();
+
             return createdPost;
         } catch (err) {
             throw err;
@@ -61,8 +72,11 @@ module.exports = {
         }
         let updatedPost = transformUpdatedPost(post, args);
 
-        //  console.log("Post found by ID " + post._doc.creator.username + " " + post._doc.creator._id)
-        //  console.log("Transformed post found by ID " + updatedPost._id + " " + updatedPost.creator._id, + " " + updatedPost.creator.username)
+        if (args.updatePost.category._id != updatedPost.category._id){
+            const oldCategory = await Category.findById(updatedPost.category._id);
+            //oldCategory.
+        }
+        
         try {
             let result = await Post.findByIdAndUpdate(args._id, updatedPost);
             return updatedPost;
@@ -80,13 +94,14 @@ module.exports = {
         
         //let indexPostToDelete = creator.createdPosts.indexOf(args._id);
         const updatedCreatorPosts = await creator.createdPosts.filter(post => post !== args._id);
+        await creator.save();
 
         console.log(`updatedCreatorPosts: ${updatedCreatorPosts}, indexPostToDelete: {indexPostToDelete}`)
 
         try {
             // const deletePostOnCreator = await remove(creator.createdPosts, args._id);
             const deletedPost = await Post.findByIdAndDelete(args._id);
-            console.log(`deletedPost: ${deletedPost}, creator: ${creator}, deletingPostId: ${args._id}, indexPostToDelete: ${indexPostToDelete}`);
+            console.log(`deletedPost: ${deletedPost}, creator: ${creator}, deletingPostId: ${args._id}`);
             return deletedPost;
         } catch (err) {
             throw err;

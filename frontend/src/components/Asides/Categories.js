@@ -38,6 +38,12 @@ const CategoriesAside = props => {
                         name
                         description
                         icon
+                        posts {
+                            _id
+                            title
+                            description
+                            imageUrl
+                        }
                     }
                 }
             `
@@ -106,6 +112,12 @@ const CategoriesAside = props => {
                     name
                     description
                     icon
+                    posts {
+                        _id
+                        title
+                        description
+                        imageUrl
+                    }
                 }
             }
         `

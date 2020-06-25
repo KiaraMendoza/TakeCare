@@ -37,9 +37,9 @@ const PostItem = props => {
 const PostsList = props => {
     const posts = props.posts.map(post => {
         if (!props.userData._id) {
-            return <PostItem className="" key={post._id} postId={post._id} onDetail={props.onDetail} onEditing={props.onEditing} userId={props.authUserId} userRol={props.authUserRol} creatorId={post.creator._id} title={post.title} description={post.description} creator={post.creator.username} createdAt={post.createdAt} imageUrl={post.imageUrl} category={post.category} />
+            return <PostItem className="" key={post._id} postId={post._id} onDetail={props.onDetail} onEditing={props.onEditing} userId={props.authUserId} userRol={props.authUserRol} creatorId={post.creator._id} title={post.title} description={post.description} creator={post.creator.username} createdAt={post.createdAt} imageUrl={post.imageUrl} category={post.category.name} />
         } else {
-            return <PostItem className="col-md-6" key={post._id} postId={post._id} onDetail={props.onDetail} onEditing={props.onEditing} userId={props.authUserId} userRol={props.authUserRol} creatorId={props.userData._id} title={post.title} description={post.description} creator={props.userData.username} createdAt={post.createdAt} imageUrl={post.imageUrl} category={post.category} />
+            return <PostItem className="col-md-6" key={post._id} postId={post._id} onDetail={props.onDetail} onEditing={props.onEditing} userId={props.authUserId} userRol={props.authUserRol} creatorId={props.userData._id} title={post.title} description={post.description} creator={props.userData.username} createdAt={post.createdAt} imageUrl={post.imageUrl} category={post.category.name} />
         }
     })
     

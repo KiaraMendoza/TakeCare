@@ -20,7 +20,6 @@ const PostsPage = () => {
                         _id
                         title
                         description
-                        category
                         createdAt
                         updatedAt
                         imageUrl
@@ -29,6 +28,10 @@ const PostsPage = () => {
                             username
                             email
                             rol
+                        }
+                        category {
+                            _id
+                            name
                         }
                     }
                 }

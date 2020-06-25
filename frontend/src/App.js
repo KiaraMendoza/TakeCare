@@ -15,6 +15,29 @@ import ProfilePage from './components/Profile/Profile';
 import PostSingle from './components/Posts/PostSingle';
 import {useCategorySingle} from './components/Categories/CategorySingle';
 
+
+const requestBody = {
+  query: `
+      query {
+          posts {
+              _id
+              title
+              description
+              category
+              createdAt
+              updatedAt
+              imageUrl
+              creator {
+                  _id
+                  username
+                  email
+                  rol
+              }
+          }
+      }
+  `
+}
+
 class App extends Component {
   setCategories = categories => {
     this.setState({ categories });

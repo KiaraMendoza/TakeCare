@@ -3,6 +3,7 @@ const Comment = require('../../models/comment');
 const Post = require('../../models/post');
 const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date');
+const Category = require('../../models/category');
 
 //Functions for making the relations between models
 const posts = async postsIds => {
@@ -38,13 +39,26 @@ const user = async userId => {
     };
 };
 
+const category = async categoryId => {
+    try {
+        const category = await Category.findById(categoryId);
+        return {
+            ...category._doc,
+            posts: posts.bind(this, category._doc.posts)
+        };
+    } catch (err) {
+        throw err;
+    };
+};
+
 //Function for refactoring transforms
 const transformPost = post => {
     return {
         ...post._doc,
         createdAt: dateToString(post._doc.createdAt),
         updatedAt: dateToString(post._doc.updatedAt),
-        creator: user.bind(this, post.creator)
+        creator: user.bind(this, post.creator),
+        category: category.bind(this, post.category)
     };
 };
 
@@ -75,6 +89,13 @@ const transformUser = singleUser => {
     return {
         ...singleUser._doc,
         createdPosts: posts.bind(this, singleUser.createdPosts)
+    };
+};
+
+const transformCategory = singleCategory => {
+    return {
+        ...singleCategory._doc,
+        posts: posts.bind(this, singleCategory.posts)
     };
 };
 
