@@ -50,7 +50,7 @@ module.exports = {
             creator.createdPosts.push(post);
             await creator.save();
             //Save post data on category info
-            const category = await Category.findById(createdPost.category._id);
+            const category = await Category.findById(post.category);
             if (!category) {
                 throw new Error('Category not found.')
             }
@@ -72,9 +72,27 @@ module.exports = {
         }
         let updatedPost = transformUpdatedPost(post, args);
 
-        if (args.updatePost.category._id != updatedPost.category._id){
-            const oldCategory = await Category.findById(updatedPost.category._id);
-            //oldCategory.
+        // If we are changing post category, we need to change them in category's posts array too.
+        if (updatedPost.category._id != post.category){
+            // Find the old category doc and filtering the post we are updating
+            const oldCategory = await Category.findById(post.category);
+            console.log(`post._id: ${post._id}, oldCategory: ${oldCategory._id}`);
+            console.log(`oldCategory.posts: ${oldCategory.posts}`);
+            const updatedCategoryPosts = oldCategory.posts.filter(post => {
+                console.log(post, args._id);
+                return post != args._id
+            });
+            console.log(`updatedCategoryPosts: ${updatedCategoryPosts}`);
+
+            await Category.update({ _id: post.category }, { posts: updatedCategoryPosts });
+
+            // Find the new category doc and adding the post
+            const category = await Category.findById(args.category);
+            if (!category) {
+                throw new Error('Category not found.')
+            }
+            category.posts.push(updatedPost._id);
+            await category.save();
         }
         
         try {
@@ -95,13 +113,13 @@ module.exports = {
             console.log(post, args._id);
             return post != args._id
         });
-        
+
         await User.update({ _id: getPostToDelete.creator },{ createdPosts: updatedCreatorPosts});
 
         try {
             // const deletePostOnCreator = await remove(creator.createdPosts, args._id);
             const deletedPost = await Post.findByIdAndDelete(args._id);
-            console.log(`deletedPost: ${deletedPost}, creator: ${creator}, deletingPostId: ${args._id}`);
+            // console.log(`deletedPost: ${deletedPost}, creator: ${creator}, deletingPostId: ${args._id}`);
             return deletedPost;
         } catch (err) {
             throw err;

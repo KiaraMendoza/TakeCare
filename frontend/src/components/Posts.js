@@ -6,7 +6,7 @@ import CategoriesAside from '../components/Asides/Categories';
 import InfoAside from '../components/Asides/Info';
 import '../SCSS/posts.scss';
 import '../SCSS/loading-spinner.scss';
-import UsePostCrud from '../handlers/postCrud';
+import PostCrud from '../handlers/postCrud';
 import { useFetchToBack } from '../helpers/fetchToBack';
 
 const PostsPage = () => {
@@ -45,7 +45,7 @@ const PostsPage = () => {
             <React.Fragment>
                 {(isLoading) 
                     ? <div className="text-center"><div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
-                    : <UsePostCrud posts={postsList ? postsList : []} canCreatePost />
+                    : <PostCrud posts={postsList ? postsList : []} canCreatePost />
                 }
             </React.Fragment>
         )

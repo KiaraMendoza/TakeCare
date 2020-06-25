@@ -32,6 +32,10 @@ class PostSingle extends Component {
                         createdAt
                         updatedAt
                         imageUrl
+                        category {
+                            _id
+                            name
+                        }
                         creator {
                             _id
                             username
@@ -77,17 +81,53 @@ class PostSingle extends Component {
         return (
             <React.Fragment>
                 {this.state.hasError && <Redirect to="/404" />}
-                <div className="post-single-container container-xl">
-                    <div className="go-to-post-page">
+                <div className="post-single-container container row mx-auto mx-lg-0 position-relative">
+                    <div className="go-to-post-page position-absolute">
                         <Link className="go-back-button" to="/posts">To posts page</Link>
                     </div>
-                    <div className="post-data">
-                        <p>{this.state.postData.title}</p>
+                    <div className="post-data col-12 col-lg-8 mb-5 mb-lg-0">
+                        <h1>{this.state.postData.title}</h1>
                         <p>{this.state.postData.description}</p>
-                        <img className="post-image" src={this.state.postData.imageUrl} />
+                        <img className="post-image w-100" src={this.state.postData.imageUrl} alt="Current post image" />
                     </div>
-                    <div className="post-comments">
-
+                    <div className="col"></div>
+                    <div className="post-comments col-12 col-lg-3 px-0 justify-content-between my-5 mt-lg-0">
+                        <div className="comments-title-container px-4"><h2>Comments:</h2></div>
+                        <div className="comments px-4 pt-3">
+                            <div className="comment">
+                                <div className="comment-user">
+                                    <p><i>Icon </i>Uri</p>
+                                </div>
+                                <div className="comment-data">
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                                        Suspendisse sit amet bibendum est, ut consequat nunc. 
+                                        Aliquam sit amet augue id quam molestie interdum sed sit amet ex.
+                                    </p>
+                                </div>
+                                <div className="comment-extras">
+                                    <i>Like </i><i>Dislike</i>
+                                </div>
+                            </div>
+                            <div className="comment">
+                                <div className="comment-user">
+                                    <p><i>Icon </i>Uri</p>
+                                </div>
+                                <div className="comment-data">
+                                    <p>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Suspendisse sit amet bibendum est, ut consequat nunc.
+                                        Aliquam sit amet augue id quam molestie interdum sed sit amet ex.
+                                    </p>
+                                </div>
+                                <div className="comment-extras">
+                                    <i>Like </i><i>Dislike</i>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="comments-textarea-container">
+                            <textarea className="comments-textarea w-100 h-100" placeholder="Insert new comment"></textarea>
+                        </div>
                     </div>
                 </div>
             </React.Fragment>

@@ -42,6 +42,52 @@
     }
 }
 
+.go-to-post-page {
+    top: -50px;
+    left: 34px;
+}
+
+.post-data {
+
+}
+
+.post-comments {
+    max-height: 65vh;
+    border: 4px solid $primaryColor;
+    background-color: $footerColor;
+    color: $desertStorm;
+}
+.comments-title-container {
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+.comments {
+    height: 70%;
+    overflow-y: scroll;
+    border-top: 2px solid $ternaryColor;
+    border-bottom: 2px solid $ternaryColor;
+    .comment {
+        padding: 10px 0;
+        border-bottom: 1px solid;
+    }
+}
+.comments-textarea-container {
+    height: 15%;
+    textarea {
+        border: 0;
+        background-color: $footerColor;
+        padding: 15px 10px;
+        overflow-y: scroll;
+        color: $desertStorm;
+        &::placeholder {
+            color: #FFF;
+        }
+    }
+}
+
 @media(min-width: $desktopBreak) {
     
 }

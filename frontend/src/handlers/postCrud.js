@@ -52,6 +52,7 @@ class PostCrud extends Component {
 
     //Create new post
     modalConfirmHandler = () => {
+        this.setState({ isLoading: true });
         //We get the posts's data using React references on the inputs
         const title = this.titleEl.current.value;
         const imageUrl = this.imageEl.current.value;
@@ -123,6 +124,7 @@ class PostCrud extends Component {
 
                     return { posts: updatedPosts };
                 });
+                this.setState({ isLoading: false });
             })
             .catch(err => {
                 this.setState({ isLoading: false });
@@ -185,6 +187,7 @@ class PostCrud extends Component {
             const updatedPost = resData.data.updatePost;
             console.log(resData.data)
             return updatedPost;
+            
         })
         .catch(err => {
             throw err;
@@ -195,7 +198,7 @@ class PostCrud extends Component {
 
     //Delete a post
     modalDeleteHandler = () => {
-        this.setState({ editing: true });
+        this.setState({ editing: true, isLoading: true });
 
         const postId = this.state.editingPost._id;
         //For editing a post
@@ -204,13 +207,6 @@ class PostCrud extends Component {
                 mutation {
                     deletePost(_id: "${postId}") {
                         _id
-                        creator {
-                            _id
-                        }
-                        category {
-                            _id
-                            name
-                        }
                     }
                 }
             `
@@ -238,8 +234,18 @@ class PostCrud extends Component {
             })
             .then(resData => {
                 const deletedPost = resData.data;
-                console.log(`Deleted post: ${JSON.stringify(resData.data)}`);
-                return deletedPost;
+                console.log(resData.data);
+                this.setState(prevState => {
+                    const updatedPosts = [...prevState.posts];
+                    updatedPosts.filter(post => {
+                        console.log(post._id, deletedPost.deletePost._id)
+                        const notDeleted = post._id != deletedPost.deletePost._id;
+                        return notDeleted;
+                    });
+
+                    return { posts: updatedPosts };
+                });
+                this.setState({ isLoading: false });
             })
             .catch(err => {
                 throw err;
@@ -305,9 +311,11 @@ class PostCrud extends Component {
                         }
                     </div>
                 }
-                <section className="posts-list-container mt-5">
-                    <PostsList onDetail={this.showDetailHandler} onEditing={this.editingPostHandler} posts={this.state.posts} userData={this.state.userData} authUserId={this.context.userId} authUserRol={this.context.userRol} />
-                </section>
+                {!this.state.isLoading &&
+                    <section className="posts-list-container mt-5">
+                        <PostsList onDetail={this.showDetailHandler} onEditing={this.editingPostHandler} posts={this.state.posts} userData={this.state.userData} authUserId={this.context.userId} authUserRol={this.context.userRol} />
+                    </section>
+                }
                 {this.state.selectedPost &&
                     <Redirect to={`/posts/${this.state.selectedPost._id}`} />
                 }

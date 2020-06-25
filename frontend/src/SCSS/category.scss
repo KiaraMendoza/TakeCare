@@ -1,0 +1,24 @@
+.aside-content { 
+    width: 100%;
+}
+.categories a {
+    color: #FFF;
+    border: 1px solid;
+    text-decoration: none;
+    padding: 10px;
+    margin-bottom: 15px;
+    transition: all 1s;
+    &:hover {
+        background-color: #FFF;
+        color: #000;
+        font-weight: 800;
+    }
+}
+
+.categories .modal-container {
+    z-index: 1;
+    padding: 0;
+    position: absolute;
+    width: 350px;
+    left: -80px;
+}

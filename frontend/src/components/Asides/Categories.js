@@ -2,6 +2,7 @@ import React, {useState, useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 //Imports from the project
 import '../../SCSS/posts.scss';
+import '../../SCSS/category.scss';
 import authContext from '../../context/auth-context';
 import CategoriesContext from '../../context/categories-context';
 import CategoryForm from '../CategoryForm';
@@ -168,9 +169,9 @@ const CategoriesAside = props => {
             <CategoriesContext.Consumer>
                 {(context) => {
                     return (
-                        <div className="aside-content px-4 py-5 mt-5">
+                        <div className="aside-content mt-5">
                             <div className="categories-list">
-                                <div className="categories d-flex flex-column">
+                                <div className="categories d-flex flex-column text-center">
                                     {(auth.token && auth.userRol === 'Admin') &&
                                         <button className="btn btn-primary" onClick={startCreatingHandler}>Add new category</button>
                                     }

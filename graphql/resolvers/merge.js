@@ -70,7 +70,7 @@ const transformUpdatedPost = (post, args) => {
         title: args.title || post.title,
         description: args.description || post.description,
         imageUrl: args.imageUrl || post.imageUrl,
-        category: args.category || post.category,
+        category: args.category || post.category
     };
 };
 

@@ -43,7 +43,10 @@ class ProfilePage extends Component {
                             _id
                             title
                             description
-                            category
+                            category {
+                                _id
+                                name
+                            }
                             createdAt
                             updatedAt
                             imageUrl
