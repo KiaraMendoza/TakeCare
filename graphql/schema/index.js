@@ -66,9 +66,9 @@ module.exports = buildSchema(`
     }
 
     input PostInput {
-        title: String!
-        description: String!
-        category: String!
+        title: String
+        description: String
+        category: String
         imageUrl: String
     }
 

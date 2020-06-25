@@ -88,15 +88,15 @@ module.exports = {
         if (!req.isAuth) {
             throw new Error('You don\'t have permission to do that');
         }
-
         const getPostToDelete = await Post.findById(args._id);
         const creator = await User.findById(getPostToDelete.creator);
         
-        //let indexPostToDelete = creator.createdPosts.indexOf(args._id);
-        const updatedCreatorPosts = await creator.createdPosts.filter(post => post !== args._id);
-        await creator.save();
-
-        console.log(`updatedCreatorPosts: ${updatedCreatorPosts}, indexPostToDelete: {indexPostToDelete}`)
+        const updatedCreatorPosts = creator.createdPosts.filter(post => {
+            console.log(post, args._id);
+            return post != args._id
+        });
+        
+        await User.update({ _id: getPostToDelete.creator },{ createdPosts: updatedCreatorPosts});
 
         try {
             // const deletePostOnCreator = await remove(creator.createdPosts, args._id);
