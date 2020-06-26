@@ -8,8 +8,9 @@ import '../SCSS/posts.scss';
 import '../SCSS/loading-spinner.scss';
 import PostCrud from '../handlers/postCrud';
 import { useFetchToBack } from '../helpers/fetchToBack';
+import { PromiseProvider } from 'mongoose';
 
-const PostsPage = () => {
+const PostsPage = (props) => {
 
     const [postsList, setPosts] = useState([]);
     
@@ -32,6 +33,7 @@ const PostsPage = () => {
                         category {
                             _id
                             name
+                            icon
                         }
                     }
                 }
@@ -45,7 +47,7 @@ const PostsPage = () => {
             <React.Fragment>
                 {(isLoading) 
                     ? <div className="text-center"><div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
-                    : <PostCrud posts={postsList ? postsList : []} canCreatePost />
+                    : <PostCrud posts={props.posts ? props.posts : postsList ? postsList : []} canCreatePost title={props.title} description={props.description}/>
                 }
             </React.Fragment>
         )
@@ -61,7 +63,7 @@ const PostsPage = () => {
             <div className="posts-container row mx-0 position-relative justify-content-center">
                 <aside className="categories-aside d-none d-md-flex col-md-2"><CategoriesAside /></aside>
                     <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
-                        <PostsPageContent/>
+                        <PostsPageContent posts={props.posts ? props.posts : false} title={props.title ? props.title : false} description={props.description ? props.description : false} />
                     </div>
                 <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><InfoAside /></aside>
             </div>

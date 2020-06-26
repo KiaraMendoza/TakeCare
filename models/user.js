@@ -8,7 +8,7 @@ const userSchema = new Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     rol: { type: String, required: true },
-    userProfileImg: { type: String },
+    imageUrl: { type: String },
     createdPosts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     createdComments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     likedPosts: [{ type: Schema.Types.ObjectId, ref: 'PostLike' }],

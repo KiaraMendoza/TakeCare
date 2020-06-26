@@ -5,6 +5,14 @@
     @extend .login-form;
 }
 
+.post-page-content {
+    
+    .btn-danger{
+        left: 40px;
+        position: absolute;
+    }
+}
+
 .posts-list-container {
     width: 100%;
     .posts-list {
@@ -94,4 +102,13 @@
 
 @media(min-width: $tabletBreak) and (max-width: $beforeDesktopBreak) {
     
+}
+
+@media(max-width:340px) {
+    .post-page-content {
+        
+        .btn-secondary{
+            margin: 0 6px !important;
+        }
+    }
 }

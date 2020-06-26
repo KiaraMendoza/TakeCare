@@ -305,7 +305,8 @@ class PostCrud extends Component {
                 }
                 {this.props.canCreatePost &&
                     <div className="posts-control text-center">
-                        <h1>Recent Posts</h1>
+                        <h1>{this.props.title ? this.props.title : 'Recent posts'}</h1>
+                        <p>{this.props.description ? this.props.description : ''}</p>
                         {this.context.token &&
                             <button className="btn btn-primary" onClick={this.startCreatePostsHandler}>Create a new post!</button>
                         }

@@ -41,7 +41,7 @@ class PostSingle extends Component {
                             username
                             email
                             rol
-                            userProfileImg
+                            imageUrl
                         }
                     }
                 }

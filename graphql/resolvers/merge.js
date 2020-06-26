@@ -103,6 +103,7 @@ exports.transformPost = transformPost;
 exports.transformUpdatedPost = transformUpdatedPost;
 exports.transformComment = transformComment;
 exports.transformUser = transformUser;
+exports.transformCategory = transformCategory;
 
 //exports.user = user;
 //exports.posts = posts;

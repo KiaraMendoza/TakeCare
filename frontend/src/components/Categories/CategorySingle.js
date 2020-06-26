@@ -5,7 +5,7 @@ import { useFetchToBack } from '../../helpers/fetchToBack';
 import PostsPage from '../Posts';
 
 
-export const useCategorySingle = (props) => {
+export const CategorySingle = (props) => {
     const [categoriesData, setCategoriesData] = useState({});
 
     let categoryName = props.match.params.name;
@@ -21,6 +21,24 @@ export const useCategorySingle = (props) => {
                         name
                         description
                         icon
+                        posts {
+                            _id
+                            title
+                            description
+                            imageUrl
+                            category {
+                                _id
+                                name
+                                description
+                                icon
+                            }
+                            creator {
+                                _id
+                                username
+                                rol
+                                imageUrl
+                            }
+                        }
                     }
                 }
             `
@@ -34,16 +52,16 @@ export const useCategorySingle = (props) => {
 
     return (
         <React.Fragment>
-            <div className="post-single-container row mx-0 pb-5">
+            <div className="post-single-container row mx-0">
                 <div className="go-to-post-page d-none d-md-flex col col-md-2">
                     <Link className="go-back-button" to="/posts">To main page</Link>
                 </div>
-                <div className="category-data text-center col-12 col-md-10 col-xl-8">
+                {/* <div className="category-data text-center col-12 col-md-10 col-xl-8">
                     <h2>{categoriesData ? categoriesData.name : ''}</h2>
                     <p>{categoriesData ? categoriesData.description : ''}</p>
-                </div>
+                </div> */}
             </div>
-            <PostsPage />
+            <PostsPage posts={categoriesData ? categoriesData.posts : false} title={categoriesData ? categoriesData.name : ''} description={categoriesData ? categoriesData.description : ''} />
         </React.Fragment>
     )
 }

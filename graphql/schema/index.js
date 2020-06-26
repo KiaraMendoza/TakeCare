@@ -43,7 +43,7 @@ module.exports = buildSchema(`
         email: String!
         password: String
         rol: String!
-        userProfileImg: String
+        imageUrl: String
         createdPosts: [Post!]
         createdComments: [Comment!]
         likedPost: [PostLike!]

@@ -108,6 +108,7 @@ module.exports = {
         }
         const getPostToDelete = await Post.findById(args._id);
         const creator = await User.findById(getPostToDelete.creator);
+        const category = await Category.findById(getPostToDelete.category);
         
         const updatedCreatorPosts = creator.createdPosts.filter(post => {
             console.log(post, args._id);
@@ -115,6 +116,13 @@ module.exports = {
         });
 
         await User.update({ _id: getPostToDelete.creator },{ createdPosts: updatedCreatorPosts});
+
+        const updatedCategoryPosts = category.posts.filter(post => {
+            console.log(post, args._id);
+            return post != args._id
+        });
+
+        await Category.update({ _id: getPostToDelete.category }, { posts: updatedCategoryPosts });
 
         try {
             // const deletePostOnCreator = await remove(creator.createdPosts, args._id);

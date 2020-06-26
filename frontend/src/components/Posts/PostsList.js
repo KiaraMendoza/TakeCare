@@ -12,7 +12,7 @@ const PostItem = props => {
                 <div className="list-header d-flex justify-content-between">
                     <h3 className="list-title pr-3 mb-0">{props.title}</h3>
                 </div>
-                <div className="list-content pt-5">
+                <div className="list-content pt-3">
                     <p className="list-category mb-0 pb-3">Category: {props.category}</p>
                     <p className="list-description mb-0 pb-3">{props.description}</p>
                     <img className="list-image" src={props.imageUrl} />

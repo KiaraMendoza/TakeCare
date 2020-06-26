@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 
 import "bootstrap/dist/css/bootstrap.min.css";
-//import "fontawesome-free/css/all.css";
-
+import '@fortawesome/fontawesome-free/css/all.min.css'; 
+import './SCSS/styles.scss';
 import './SCSS/App.scss';
 import AuthContext from './context/auth-context';
 import CategoriesContext from './context/categories-context';
@@ -13,7 +13,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProfilePage from './components/Profile/Profile';
 import PostSingle from './components/Posts/PostSingle';
-import {useCategorySingle} from './components/Categories/CategorySingle';
+import {CategorySingle} from './components/Categories/CategorySingle';
 
 
 const requestBody = {
@@ -87,7 +87,7 @@ class App extends Component {
                 <Switch>
                   <Route path="/profile/:id" component={ProfilePage} />
                   <Route path="/posts/:id" component={PostSingle} />
-                  <Route path="/category/:name" component={useCategorySingle} />
+                  <Route path="/category/:name" component={CategorySingle} />
                   <Route path="/posts" component={PostsPage} />
                   {!this.state.token && <Redirect from="/" to="/login" exact />}
                   {!this.state.token && <Route path="/login" component={LoginPage} />}

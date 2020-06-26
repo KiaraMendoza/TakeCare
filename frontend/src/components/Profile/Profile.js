@@ -38,7 +38,7 @@ class ProfilePage extends Component {
                         username
                         email
                         rol
-                        userProfileImg
+                        imageUrl
                         createdPosts {
                             _id
                             title
@@ -55,7 +55,6 @@ class ProfilePage extends Component {
                                 username
                                 email
                                 rol
-                                userProfileImg
                             }
                         }
                     }
@@ -98,7 +97,7 @@ class ProfilePage extends Component {
                 <div className="profile-container">
                     <div className="profile-detail p-5 row mx-0">
                         <div className="detail-left-side col-12 col-md-4 text-center">
-                            <img src={`${this.state.userData.userProfileImg ? this.state.userData.userProfileImg : 'https://via.placeholder.com/350x320'}`} className="user-profile-image" width="150px" />
+                            <img src={`${this.state.userData.imageUrl ? this.state.userData.imageUrl : 'https://via.placeholder.com/350x320'}`} className="user-profile-image" width="150px" />
                             <p>{this.state.userData.username}</p>
                         </div>
                         <div className="detail-right-side col-12 col-md-8">
