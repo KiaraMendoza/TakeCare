@@ -181,7 +181,7 @@ const RacesAside = props => {
                                         </Modal>
                                     }
                                     <hr />
-                                    {categoriesList.map(category => <Link to={`/category/${category.name}`} key={category._id}><i className={category.icon} />{category.name}</Link>)}
+                                    {categoriesList.map(category => <Link to={`/category/${category.name}`} key={category._id}><i className={`${category.icon} mr-2`} />{category.name}</Link>)}
                                 </div>
                             </div>
                         </div>

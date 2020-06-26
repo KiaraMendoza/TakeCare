@@ -52,16 +52,15 @@
 
 .go-to-post-page {
     top: -50px;
-    left: 34px;
-}
-
-.post-data {
-
+    left: 20px;
+    a {
+        color: $primaryColor;
+    }
 }
 
 .post-comments {
     max-height: 65vh;
-    border: 4px solid $primaryColor;
+    border: 4px solid $borderColor;
     background-color: $footerColor;
     color: $desertStorm;
 }
@@ -90,6 +89,11 @@
         padding: 15px 10px;
         overflow-y: scroll;
         color: $desertStorm;
+        resize: none;
+        margin-top: 6px;
+        &:focus {
+            outline: none;
+        }
         &::placeholder {
             color: #FFF;
         }

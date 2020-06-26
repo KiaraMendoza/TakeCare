@@ -7,6 +7,7 @@ import authContext from '../../context/auth-context';
 import CategoriesContext from '../../context/categories-context';
 import CategoryForm from '../CategoryForm';
 import Modal from '../../modal/modal';
+import { CategorySingle } from '../Categories/CategorySingle';
 
 //const categories = ['Husky', 'German shepard', 'Yorkshire', 'Chihuaha', 'Checoslovaquian WD'];
 
@@ -181,7 +182,8 @@ const CategoriesAside = props => {
                                         </Modal>
                                     }
                                     <hr />
-                                    {categoriesList.map(category => <Link to={`/category/${category.name}`} key={category._id}><i className={category.icon}/>{category.name}</Link>)}
+                                    {categoriesList.map(category => <Link to={`/category/${category.name}`} key={category._id}><i className={`${category.icon} mr-2`}/>{category.name}</Link>)}
+                                    {/* {categoriesList.map(category => { return (<CategorySingle currentCategory={category.name}></CategorySingle>)})} */}
                                 </div>
                             </div>
                         </div>

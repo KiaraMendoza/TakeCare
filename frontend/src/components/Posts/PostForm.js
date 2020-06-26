@@ -9,6 +9,10 @@ const PostForm = props => {
     const [categoriesList, setCategoriesList] = useState([categories]);
     //const [isLoading, setIsLoading] = useState(false);
 
+    if (props.match.params.name) {
+        const categories = this.props.match.params.name;
+    }
+
     useEffect(() => {
         setCategoriesList(categories);
         console.log(categoriesList);

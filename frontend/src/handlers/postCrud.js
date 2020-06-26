@@ -229,12 +229,10 @@ class PostCrud extends Component {
                     throw new Error('Failed!');
                 }
                 const resToJson = res.json();
-                console.log(resToJson);
                 return resToJson;
             })
             .then(resData => {
                 const deletedPost = resData.data;
-                console.log(resData.data);
                 this.setState(prevState => {
                     const updatedPosts = [...prevState.posts];
                     updatedPosts.filter(post => {
@@ -264,7 +262,6 @@ class PostCrud extends Component {
     showDetailHandler = (postId) => {
         this.setState(prevState => {
             const selectedPost = prevState.posts.find(post => post._id === postId);
-            console.log(selectedPost)
             return { selectedPost: selectedPost };
         });
     }
@@ -287,7 +284,6 @@ class PostCrud extends Component {
     }
 
     render() {
-        console.log(`Props posts: ${this.props.posts}, Posts state: ${this.state.posts}`)
         return (
             <React.Fragment>
                 {(this.state.creating || this.state.editing) &&

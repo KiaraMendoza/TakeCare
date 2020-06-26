@@ -9,9 +9,8 @@ export const CategorySingle = (props) => {
     const [categoriesData, setCategoriesData] = useState({});
 
     let categoryName = props.match.params.name;
-    // if (props.category) {
-    //     const categoryName = props.category.name;
-    // }
+
+    console.log(props.location.pathname, props.match.params.name)
 
     const requestBody = {
         query: `
@@ -44,7 +43,11 @@ export const CategorySingle = (props) => {
             `
     }
 
-    const [isLoading, fetchedData] = useFetchToBack(requestBody);
+    const [isLoading, fetchedData] = useFetchToBack(requestBody, categoryName);
+
+    useEffect(() => {
+        const categoryName = props.match.params.name;
+    }, [props.location.pathname]);
 
     useEffect(() => {
         setCategoriesData(fetchedData.categoryData);
@@ -52,9 +55,9 @@ export const CategorySingle = (props) => {
 
     return (
         <React.Fragment>
-            <div className="post-single-container row mx-0">
+            <div className="post-category-container row mx-0">
                 <div className="go-to-post-page d-none d-md-flex col col-md-2">
-                    <Link className="go-back-button" to="/posts">To main page</Link>
+                    <Link className="go-back-button" to="/posts"><i class="fas fa-arrow-circle-left mr-2"></i>To main page</Link>
                 </div>
                 {/* <div className="category-data text-center col-12 col-md-10 col-xl-8">
                     <h2>{categoriesData ? categoriesData.name : ''}</h2>

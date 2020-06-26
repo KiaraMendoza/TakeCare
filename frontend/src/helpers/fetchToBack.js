@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import authContext from '../context/auth-context';
 
-export const useFetchToBack = (requestBody) => {
+export const useFetchToBack = (requestBody, dependencies) => {
     const [fetchedData, setFetchedData] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     //const { token } = useContext(authContext);
@@ -32,8 +32,7 @@ export const useFetchToBack = (requestBody) => {
             setIsLoading(false);
             throw err;
         });
-    }, []);
+    }, [dependencies]);
 
-    console.log(`isLoading: ${isLoading}, fetchedData: ${fetchedData}`)
     return [isLoading, fetchedData];
 };
