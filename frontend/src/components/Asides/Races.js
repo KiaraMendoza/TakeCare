@@ -1,11 +1,9 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 //Imports from the project
-import '../../SCSS/posts.scss';
-import '../../SCSS/category.scss';
 import authContext from '../../context/auth-context';
 import CategoriesContext from '../../context/categories-context';
-import CategoryForm from '../CategoryForm';
+import CategoryForm from '../Categories/CategoryForm';
 import Modal from '../../modal/modal';
 
 //const categories = ['Husky', 'German shepard', 'Yorkshire', 'Chihuaha', 'Checoslovaquian WD'];
@@ -13,11 +11,11 @@ import Modal from '../../modal/modal';
 const RacesAside = props => {
     //Get authContext
     const auth = useContext(authContext);
-    const { categories, setCategories } = useContext(CategoriesContext);
+    const { races, setRaces } = useContext(CategoriesContext);
     //Declare state on a hook
     const [isCreating, setIsCreating] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [categoriesList, setCategoriesList] = useState([]);
+    const [racesList, setRacesList] = useState([]);
     //Adding React references to get the inputs' values.
     const nameEl = useRef(null);
     const iconEl = useRef(null);
@@ -25,16 +23,16 @@ const RacesAside = props => {
 
     //Update categoriesContext when page's refresh or when added a new category.
     useEffect(() => {
-        fetchCategories();
+        fetchRaces();
     }, []);
 
     //Method to fetch all categories:
-    const fetchCategories = () => {
+    const fetchRaces = () => {
         setIsLoading(true);
         const requestBody = {
             query: `
                 query {
-                    categories {
+                    races {
                         _id
                         name
                         description
@@ -44,6 +42,16 @@ const RacesAside = props => {
                             title
                             description
                             imageUrl
+                            category {
+                                _id
+                                name
+                                icon
+                            }
+                            race {
+                                _id
+                                name
+                                icon
+                            }
                         }
                     }
                 }
@@ -68,11 +76,10 @@ const RacesAside = props => {
                 return res.json();
             })
             .then(resData => {
-                //console.log(`categories: ${resData.data.categories}`);
                 setIsLoading(false);
-                setCategoriesList(resData.data.categories);
-                setCategories(resData.data.categories);
-                return categoriesList;
+                setRacesList(resData.data.races);
+                setRaces(resData.data.races);
+                return racesList;
             })
             .catch(err => {
                 setIsLoading(false);
@@ -93,8 +100,8 @@ const RacesAside = props => {
         return isCreating;
     }
 
-    const createCategory = () => {
-        //We get the category's data using React references on the inputs
+    const createRace = () => {
+        //We get the race's data using React references on the inputs
         const name = nameEl.current.value;
         const icon = iconEl.current.value;
         const description = descriptionEl.current.value;
@@ -104,11 +111,11 @@ const RacesAside = props => {
             return;
         }
 
-        //For creating a category
+        //For creating a race
         const requestBody = {
             query: `
             mutation {
-                createCategory(categoryInput: {name: "${name}", description: "${description}", icon: "${icon}" } ) {
+                createRace(raceInput: {name: "${name}", description: "${description}", icon: "${icon}" } ) {
                     _id
                     name
                     description
@@ -143,17 +150,16 @@ const RacesAside = props => {
                 return res.json();
             })
             .then(resData => {
-                console.log(`ResData: ${resData.data}, categoryData?: ${JSON.stringify(resData.data)}`)
-                const createdCategory = resData.data.createCategory;
+                const createdRace = resData.data.createRace;
                 setIsLoading(false);
                 setIsCreating(false);
-                setCategoriesList(prevState => {
-                    return [...prevState, createdCategory];
+                setRacesList(prevState => {
+                    return [...prevState, createdRace];
                 });
-                setCategories(prevState => {
-                    return [...prevState, createdCategory];
+                setRaces(prevState => {
+                    return [...prevState, createdRace];
                 });
-                return createdCategory;
+                return createdRace;
             })
             .catch(err => {
                 setIsLoading(false);
@@ -173,15 +179,16 @@ const RacesAside = props => {
                             <div className="categories-list">
                                 <div className="categories d-flex flex-column text-center">
                                     {(auth.token && auth.userRol === 'Admin') &&
-                                        <button className="btn btn-primary" onClick={startCreatingHandler}>Add new race</button>
+                                        <button className="btn btn-primary mb-3" onClick={startCreatingHandler}>Add new race</button>
                                     }
                                     {isCreating &&
-                                        <Modal title="Adding new race..." canCancel onCancel={modalCancelHandler} canConfirm onConfirm={createCategory}>
+                                        <Modal title="Adding new race..." canCancel onCancel={modalCancelHandler} canConfirm onConfirm={createRace}>
                                             <CategoryForm nameEl={nameEl} descriptionEl={descriptionEl} iconEl={iconEl} />
                                         </Modal>
                                     }
+                                    <h3 className="aside-title">Races</h3>
                                     <hr />
-                                    {categoriesList.map(category => <Link to={`/category/${category.name}`} key={category._id}><i className={`${category.icon} mr-2`} />{category.name}</Link>)}
+                                    {racesList.map(race => <Link to={`/race/${race.name}`} key={race._id}><i className={`${race.icon} mr-2`} />{race.name}</Link>)}
                                 </div>
                             </div>
                         </div>

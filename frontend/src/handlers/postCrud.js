@@ -1,15 +1,11 @@
-import { useState, useEffect, useContext } from 'react';
 import React, { Component } from 'react';
 
 import Modal from '../modal/modal';
 import Overlay from '../components/Overlay';
 import AuthContext from '../context/auth-context';
-//import PostsContext from '../handlers/posts-context';
 import PostsList from '../components/Posts/PostsList';
 import PostForm from '../components/Posts/PostForm';
 import { Redirect, NavLink } from 'react-router-dom';
-import '../SCSS/posts.scss';
-import '../SCSS/loading-spinner.scss';
 //import useFetchWithToken from '../helpers/fetchWithToken';
  
 class PostCrud extends Component {
@@ -31,11 +27,13 @@ class PostCrud extends Component {
         this.imageEl = React.createRef();
         this.descriptionEl = React.createRef();
         this.categoryEl = React.createRef();
+        this.raceEl = React.createRef();
 
         this.editTitleEl = React.createRef();
         this.editImageEl = React.createRef();
         this.editDescriptionEl = React.createRef();
         this.editCategoryEl = React.createRef();
+        this.editRaceEl = React.createRef();
     }
     
     componentDidMount() {
@@ -58,6 +56,7 @@ class PostCrud extends Component {
         const imageUrl = this.imageEl.current.value;
         const description = this.descriptionEl.current.value;
         const category = this.categoryEl.current.value;
+        const race = this.raceEl.current.value;
 
         if (title.trim().length === 0 || description.trim().length === 0) {
             console.log('Something bad!');
@@ -74,11 +73,15 @@ class PostCrud extends Component {
         const requestBody = {
             query: `
                 mutation {
-                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "${category}" } ) {
+                    createPost(postInput: {title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "${category}", race: "${race}" } ) {
                         _id
                         title
                         description
                         category {
+                            _id
+                            name
+                        }
+                        race {
                             _id
                             name
                         }
@@ -142,6 +145,7 @@ class PostCrud extends Component {
         const imageUrl = this.editImageEl.current.value;
         const description = this.editDescriptionEl.current.value;
         const category = this.editCategoryEl.current.value;
+        const race = this.editRaceEl.current.value;
         const postId = this.state.editingPost._id;
 
         console.log(postId + " " + title + " " + description + " " + imageUrl);
@@ -149,11 +153,15 @@ class PostCrud extends Component {
         const requestBody = {
             query: `
                 mutation {
-                    updatePost(_id: "${postId}", title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "${category}" ) {
+                    updatePost(_id: "${postId}", title: "${title}", description: "${description}", imageUrl: "${imageUrl}", category: "${category}", race: "${race}" ) {
                         _id
                         title
                         description
                         category {
+                            _id
+                            name
+                        }
+                        race {
                             _id
                             name
                         }
@@ -237,11 +245,14 @@ class PostCrud extends Component {
                     const updatedPosts = [...prevState.posts];
                     updatedPosts.filter(post => {
                         console.log(post._id, deletedPost.deletePost._id)
-                        const notDeleted = post._id != deletedPost.deletePost._id;
-                        return notDeleted;
+                        return post._id != deletedPost.deletePost._id;
                     });
 
-                    return { posts: updatedPosts };
+                    if (updatedPosts >= 1) {
+                        return { posts: updatedPosts };
+                    }
+                    return { posts: [] };
+
                 });
                 this.setState({ isLoading: false });
             })
@@ -291,12 +302,12 @@ class PostCrud extends Component {
                 }
                 {this.state.creating &&
                     <Modal title="Add a new Post" canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalConfirmHandler}>
-                        <PostForm submitHandler={this.submitHandler} titleEl={this.titleEl} descriptionEl={this.descriptionEl} imageEl={this.imageEl} categoryEl={this.categoryEl} />
+                        <PostForm submitHandler={this.submitHandler} titleEl={this.titleEl} descriptionEl={this.descriptionEl} imageEl={this.imageEl} categoryEl={this.categoryEl} raceEl={this.raceEl}/>
                     </Modal>
                 }
                 {(this.state.editing && this.state.editingPost) &&
                     <Modal title={`Editing ${this.state.editingPost.title}`} canDelete onDelete={this.modalDeleteHandler} canCancel onCancel={this.modalCancelHandler} canConfirm onConfirm={this.modalEditHandler}>
-                        <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} categoryEl={this.editCategoryEl}/>
+                    <PostForm submitHandler={this.submitHandler} titleEl={this.editTitleEl} descriptionEl={this.editDescriptionEl} imageEl={this.editImageEl} categoryEl={this.editCategoryEl} raceEl={this.editRaceEl}/>
                     </Modal>
                 }
                 {this.props.canCreatePost &&

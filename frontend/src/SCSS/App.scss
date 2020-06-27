@@ -63,6 +63,11 @@ main {
     z-index: 2;
 }
 
+.image-background {
+    width: 100%;
+    text-align: center;
+}
+
 @media(min-width: $desktopBreak) {
     .main{
         max-width: 70%;

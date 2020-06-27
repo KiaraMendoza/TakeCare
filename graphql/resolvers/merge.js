@@ -4,6 +4,7 @@ const Post = require('../../models/post');
 const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date');
 const Category = require('../../models/category');
+const Race = require('../../models/race');
 
 //Functions for making the relations between models
 const posts = async postsIds => {
@@ -51,6 +52,18 @@ const category = async categoryId => {
     };
 };
 
+const race = async raceId => {
+    try {
+        const race = await Race.findById(raceId);
+        return {
+            ...race._doc,
+            posts: posts.bind(this, race._doc.posts)
+        };
+    } catch (err) {
+        throw err;
+    };
+};
+
 //Function for refactoring transforms
 const transformPost = post => {
     return {
@@ -58,7 +71,8 @@ const transformPost = post => {
         createdAt: dateToString(post._doc.createdAt),
         updatedAt: dateToString(post._doc.updatedAt),
         creator: user.bind(this, post.creator),
-        category: category.bind(this, post.category)
+        category: category.bind(this, post.category),
+        race: race.bind(this, post.race)
     };
 };
 
@@ -70,7 +84,8 @@ const transformUpdatedPost = (post, args) => {
         title: args.title || post.title,
         description: args.description || post.description,
         imageUrl: args.imageUrl || post.imageUrl,
-        category: args.category || post.category
+        category: args.category || post.category,
+        race: args.race || post.race,
     };
 };
 
@@ -99,12 +114,16 @@ const transformCategory = singleCategory => {
     };
 };
 
+const transformRace = singleCategory => {
+    return {
+        ...singleCategory._doc,
+        posts: posts.bind(this, singleCategory.posts)
+    };
+};
+
 exports.transformPost = transformPost;
 exports.transformUpdatedPost = transformUpdatedPost;
 exports.transformComment = transformComment;
 exports.transformUser = transformUser;
 exports.transformCategory = transformCategory;
-
-//exports.user = user;
-//exports.posts = posts;
-//exports.singlePost = singlePost;
+exports.transformRace = transformRace;

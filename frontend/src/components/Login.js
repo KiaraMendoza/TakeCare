@@ -1,7 +1,6 @@
 //Imports from the node_modules
 import React, { Component } from 'react';
 //Imports from the project
-import '../SCSS/login-form.scss';
 import AuthContext from '../context/auth-context';
 
 
@@ -101,6 +100,7 @@ class LoginPage extends Component {
                     resDataLogin.tokenExpiration
                 )
             }
+            this.setState({isLogin: true});
             return resData;
         })
         .catch(err => {

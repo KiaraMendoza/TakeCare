@@ -7,6 +7,7 @@ module.exports = buildSchema(`
         title: String!
         description: String!
         category: Category!
+        race: Race!
         imageUrl: String
         createdAt: String!
         updatedAt: String!
@@ -58,6 +59,14 @@ module.exports = buildSchema(`
         posts: [Post!]
     }
 
+    type Race {
+        _id: ID!
+        name: String!
+        description: String!
+        icon: String!
+        posts: [Post!]
+    }
+
     type AuthData {
         userId: ID!
         userRol: String!
@@ -69,10 +78,17 @@ module.exports = buildSchema(`
         title: String
         description: String
         category: String
+        race: String
         imageUrl: String
     }
 
     input CategoryInput {
+        name: String!
+        description: String!
+        icon: String!
+    }
+
+    input RaceInput {
         name: String!
         description: String!
         icon: String!
@@ -92,14 +108,17 @@ module.exports = buildSchema(`
         login(email: String!, password: String!):AuthData!
         categories: [Category!]!
         categoryData(name: String!): Category!
+        races: [Race!]!
+        raceData(name: String!): Race!
     }
 
     type RootMutation {
         createPost(postInput: PostInput): Post
-        updatePost(_id: String!, title: String, description: String, imageUrl: String, category: String ): Post
+        updatePost(_id: String!, title: String, description: String, imageUrl: String, category: String, race: String ): Post
         deletePost(_id: String!): Post
         createUser(userInput: UserInput): User
         createCategory(categoryInput: CategoryInput): Category
+        createRace(raceInput: RaceInput): Race
     }
 
     schema {

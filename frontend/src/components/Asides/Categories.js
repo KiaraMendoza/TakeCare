@@ -1,11 +1,9 @@
 import React, {useState, useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 //Imports from the project
-import '../../SCSS/posts.scss';
-import '../../SCSS/category.scss';
 import authContext from '../../context/auth-context';
 import CategoriesContext from '../../context/categories-context';
-import CategoryForm from '../CategoryForm';
+import CategoryForm from '../Categories/CategoryForm';
 import Modal from '../../modal/modal';
 import { CategorySingle } from '../Categories/CategorySingle';
 
@@ -45,6 +43,16 @@ const CategoriesAside = props => {
                             title
                             description
                             imageUrl
+                            race {
+                                _id
+                                name
+                                icon
+                            }
+                            category {
+                                _id
+                                name
+                                icon
+                            }
                         }
                     }
                 }
@@ -174,16 +182,16 @@ const CategoriesAside = props => {
                             <div className="categories-list">
                                 <div className="categories d-flex flex-column text-center">
                                     {(auth.token && auth.userRol === 'Admin') &&
-                                        <button className="btn btn-primary" onClick={startCreatingHandler}>Add new category</button>
+                                        <button className="btn btn-primary mb-3" onClick={startCreatingHandler}>Add new category</button>
                                     }
                                     {isCreating &&
                                         <Modal title="Adding new category..." canCancel onCancel={modalCancelHandler} canConfirm onConfirm={createCategory}>
                                             <CategoryForm nameEl={nameEl} descriptionEl={descriptionEl} iconEl={iconEl} />
                                         </Modal>
                                     }
+                                    <h3 className="aside-title">Categories</h3>
                                     <hr />
                                     {categoriesList.map(category => <Link to={`/category/${category.name}`} key={category._id}><i className={`${category.icon} mr-2`}/>{category.name}</Link>)}
-                                    {/* {categoriesList.map(category => { return (<CategorySingle currentCategory={category.name}></CategorySingle>)})} */}
                                 </div>
                             </div>
                         </div>

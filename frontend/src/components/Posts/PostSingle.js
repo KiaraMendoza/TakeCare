@@ -1,10 +1,9 @@
 //Imports from the node_modules
 import React, { Component } from 'react';
 //Imports from the project
-import '../../SCSS/posts.scss';
 import { Redirect, Link } from 'react-router-dom';
 import CategoriesAside from '../Asides/Categories';
-import RacesAside from '../Asides/Info';
+import RacesAside from '../Asides/Races';
 
 class PostSingle extends Component {
     state = {
@@ -34,6 +33,10 @@ class PostSingle extends Component {
                         createdAt
                         updatedAt
                         imageUrl
+                        race {
+                            _id
+                            name
+                        }
                         category {
                             _id
                             name
@@ -94,7 +97,9 @@ class PostSingle extends Component {
                         <div className="post-data mb-5">
                             <h1>{this.state.postData.title}</h1>
                             <p>{this.state.postData.description}</p>
-                            <img className="post-image w-100" src={this.state.postData.imageUrl} alt="Current post image" />
+                            <div className="image-background">
+                                <img className="post-image mw-100" src={this.state.postData.imageUrl} alt="Current post image" />
+                            </div>
                         </div>
                         <div className="post-comments px-0 justify-content-between my-5">
                             <div className="comments-title-container px-4"><h2>Comments:</h2></div>

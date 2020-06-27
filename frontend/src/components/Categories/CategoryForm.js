@@ -1,8 +1,6 @@
 //Imports from the node_modules
 import React from 'react';
 //Imports from the project
-import '../SCSS/posts.scss';
-import '../SCSS/category.scss';
 
 const CategoryForm = props => {
 

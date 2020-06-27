@@ -2,8 +2,10 @@
 const Post = require('../../models/post');
 const Comment = require('../../models/comment');
 const Category = require('../../models/category');
+const Race = require('../../models/race');
 const User = require('../../models/user'); 
-const { transformPost, user, transformUpdatedPost } = require('./merge');
+const { transformPost, transformUpdatedPost } = require('./merge');
+const {filterArray} = require('../../helpers/filterArray');
 
 module.exports = {
     //query for all posts
@@ -20,7 +22,8 @@ module.exports = {
     postData: async (postId) => {
         try {
             const post = await Post.findById(postId);
-            return transformPost(post);
+            const result = transformPost(post);
+            return result;
         } catch (err) {
             throw err;
         }
@@ -35,6 +38,7 @@ module.exports = {
             description: args.postInput.description,
             imageUrl: args.postInput.imageUrl,
             category: args.postInput.category,
+            race: args.postInput.race,
             creator: req.userId
         });
         let createdPost;
@@ -49,6 +53,7 @@ module.exports = {
             }
             creator.createdPosts.push(post);
             await creator.save();
+
             //Save post data on category info
             const category = await Category.findById(post.category);
             if (!category) {
@@ -56,6 +61,14 @@ module.exports = {
             }
             category.posts.push(post);
             await category.save();
+
+            //Save posts data on race info
+            const race = await Race.findById(post.race);
+            if (!race) {
+                throw new Error('Race not found.')
+            }
+            race.posts.push(post);
+            await race.save();
 
             return createdPost;
         } catch (err) {
@@ -71,28 +84,40 @@ module.exports = {
             throw new Error(`Couldn't find post with id ${args._id}`);
         }
         let updatedPost = transformUpdatedPost(post, args);
-
+        
+        console.log(`post.category: ${post.category}, updatedPost: ${args.category}, ${post.category == args.category}`)
         // If we are changing post category, we need to change them in category's posts array too.
-        if (updatedPost.category._id != post.category){
+        if (args.category != post.category){
             // Find the old category doc and filtering the post we are updating
             const oldCategory = await Category.findById(post.category);
-            console.log(`post._id: ${post._id}, oldCategory: ${oldCategory._id}`);
-            console.log(`oldCategory.posts: ${oldCategory.posts}`);
-            const updatedCategoryPosts = oldCategory.posts.filter(post => {
-                console.log(post, args._id);
-                return post != args._id
-            });
-            console.log(`updatedCategoryPosts: ${updatedCategoryPosts}`);
-
-            await Category.update({ _id: post.category }, { posts: updatedCategoryPosts });
+            const updatedCategoryPosts = filterArray(args._id, oldCategory.posts);
+            
+            await Category.update({ _id: post.category }, { posts: updatedCategoryPosts ? updatedCategoryPosts : [] });
 
             // Find the new category doc and adding the post
             const category = await Category.findById(args.category);
             if (!category) {
-                throw new Error('Category not found.')
+                throw new Error('Category not found.');
             }
             category.posts.push(updatedPost._id);
             await category.save();
+        }
+
+        // The same as above but with race.
+        if (args.race != post.race) {
+            // Find the old race doc and filtering the post we are updating
+            const oldRace = await Race.findById(post.race);
+            const updatedRacePosts = filterArray(args._id, oldRace.posts);
+
+            await Race.update({ _id: post.race }, { posts: updatedRacePosts ? updatedRacePosts : [] });
+
+            // Find the new race doc and adding the post
+            const race = await Race.findById(args.race);
+            if (!race) {
+                throw new Error('Race not found.');
+            }
+            race.posts.push(updatedPost._id);
+            await race.save();
         }
         
         try {
@@ -106,23 +131,26 @@ module.exports = {
         if (!req.isAuth) {
             throw new Error('You don\'t have permission to do that');
         }
+        
         const getPostToDelete = await Post.findById(args._id);
         const creator = await User.findById(getPostToDelete.creator);
         const category = await Category.findById(getPostToDelete.category);
+        const race = await Race.findById(getPostToDelete.race);
         
-        const updatedCreatorPosts = creator.createdPosts.filter(post => {
-            console.log(post, args._id);
-            return post != args._id
-        });
+        //User posts update
+        const updatedCreatorPosts = filterArray(args._id, creator.createdPosts);
 
-        await User.update({ _id: getPostToDelete.creator },{ createdPosts: updatedCreatorPosts});
+        await User.update({ _id: getPostToDelete.creator }, { createdPosts: updatedCreatorPosts ? updatedCreatorPosts : []});
 
-        const updatedCategoryPosts = category.posts.filter(post => {
-            console.log(post, args._id);
-            return post != args._id
-        });
+        //Category posts update
+        const updatedCategoryPosts = filterArray(args._id, category.posts)
 
-        await Category.update({ _id: getPostToDelete.category }, { posts: updatedCategoryPosts });
+        await Category.update({ _id: getPostToDelete.category }, { posts: updatedCategoryPosts ? updatedCategoryPosts : [] });
+
+        //Race posts update
+        const updatedRacePosts = filterArray(args._id, race.posts);
+
+        await Race.update({ _id: getPostToDelete.race }, { posts: updatedRacePosts ? updatedRacePosts : [] });
 
         try {
             // const deletePostOnCreator = await remove(creator.createdPosts, args._id);

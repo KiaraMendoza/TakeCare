@@ -3,18 +3,17 @@ import { Redirect, Link } from 'react-router-dom';
 import { useFetchToBack } from '../../helpers/fetchToBack';
 import PostsPage from '../Posts';
 
+export const RaceSingle = (props) => {
+    const [racesData, setRacesData] = useState({});
 
-export const CategorySingle = (props) => {
-    const [categoriesData, setCategoriesData] = useState({});
-
-    let categoryName = props.match.params.name;
+    let raceName = props.match.params.name;
 
     console.log(props.location.pathname, props.match.params.name)
 
     const requestBody = {
         query: `
                 query {
-                    categoryData(name : "${categoryName}") {
+                    raceData(name : "${raceName}") {
                         _id
                         name
                         description
@@ -48,14 +47,14 @@ export const CategorySingle = (props) => {
             `
     }
 
-    const [isLoading, fetchedData] = useFetchToBack(requestBody, categoryName);
+    const [isLoading, fetchedData] = useFetchToBack(requestBody, raceName);
 
     useEffect(() => {
-        const categoryName = props.match.params.name;
+        const raceName = props.match.params.name;
     }, [props.location.pathname]);
 
     useEffect(() => {
-        setCategoriesData(fetchedData.categoryData);
+        setRacesData(fetchedData.raceData);
     }, [fetchedData]);
 
     return (
@@ -65,7 +64,7 @@ export const CategorySingle = (props) => {
                     <Link className="go-back-button" to="/posts"><i class="fas fa-arrow-circle-left mr-2"></i>To main page</Link>
                 </div>
             </div>
-            <PostsPage posts={categoriesData ? categoriesData.posts : false} title={categoriesData ? categoriesData.name : ''} description={categoriesData ? categoriesData.description : ''} />
+            <PostsPage posts={racesData ? racesData.posts : false} title={racesData ? racesData.name : ''} description={racesData ? racesData.description : ''} />
         </React.Fragment>
     )
 }

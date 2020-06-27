@@ -3,12 +3,9 @@ import React, { useState, useEffect, useContext } from 'react';
 //Imports from the project
 import AuthContext from '../context/auth-context';
 import CategoriesAside from '../components/Asides/Categories';
-import InfoAside from '../components/Asides/Info';
-import '../SCSS/posts.scss';
-import '../SCSS/loading-spinner.scss';
+import RacesAside from './Asides/Races';
 import PostCrud from '../handlers/postCrud';
 import { useFetchToBack } from '../helpers/fetchToBack';
-import { PromiseProvider } from 'mongoose';
 
 const PostsPage = (props) => {
 
@@ -31,6 +28,11 @@ const PostsPage = (props) => {
                             rol
                         }
                         category {
+                            _id
+                            name
+                            icon
+                        }
+                        race {
                             _id
                             name
                             icon
@@ -64,7 +66,7 @@ const PostsPage = (props) => {
                     <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
                         <PostsPageContent posts={props.posts ? props.posts : false} data={props.data ? props.data : false } />
                     </div>
-                <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><InfoAside /></aside>
+                <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><RacesAside /></aside>
             </div>
         </React.Fragment>
     )

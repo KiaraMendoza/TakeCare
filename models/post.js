@@ -8,6 +8,7 @@ const postSchema = new Schema({
     description: { type: String, required: true },
     imageUrl: { type: String },
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
+    race: { type: Schema.Types.ObjectId, ref: 'Race' },
     creator: { type: Schema.Types.ObjectId, ref: 'User' },
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     likes: [{ type: Schema.Types.ObjectId, ref: 'PostLike' }],

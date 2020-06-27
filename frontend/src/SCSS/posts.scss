@@ -13,6 +13,14 @@
     }
 }
 
+.posts-control {
+    max-width: 60%;
+    margin: 0 auto;
+    p {
+        margin: 25px 0;
+    }
+}
+
 .posts-list-container {
     width: 100%;
     .posts-list {
@@ -53,8 +61,13 @@
 .go-to-post-page {
     top: -50px;
     left: 20px;
-    a {
+}
+
+.go-back-button {
+    color: $primaryColor;
+    &:hover, &:focus, &:active {
         color: $primaryColor;
+        text-decoration: none;
     }
 }
 

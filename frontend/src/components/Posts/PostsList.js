@@ -14,6 +14,7 @@ const PostItem = props => {
                 </div>
                 <div className="list-content pt-3">
                     <p className="list-category mb-0 pb-3">Category: {props.category}</p>
+                    <p className="list-category mb-0 pb-3">Race: {props.race}</p>
                     <p className="list-description mb-0 pb-3">{props.description}</p>
                     <img className="list-image" src={props.imageUrl} />
                 </div>
@@ -37,9 +38,9 @@ const PostItem = props => {
 const PostsList = props => {
     const posts = props.posts.map(post => {
         if (!props.userData._id) {
-            return <PostItem className="" key={post._id} postId={post._id} onDetail={props.onDetail} onEditing={props.onEditing} userId={props.authUserId} userRol={props.authUserRol} creatorId={post.creator._id} title={post.title} description={post.description} creator={post.creator.username} createdAt={post.createdAt} imageUrl={post.imageUrl} category={post.category.name} />
+            return <PostItem className="" key={post._id} postId={post._id} onDetail={props.onDetail} onEditing={props.onEditing} userId={props.authUserId} userRol={props.authUserRol} creatorId={post.creator._id} title={post.title} description={post.description} creator={post.creator.username} createdAt={post.createdAt} imageUrl={post.imageUrl} category={post.category.name} race={post.race.name} />
         } else {
-            return <PostItem className="col-md-6" key={post._id} postId={post._id} onDetail={props.onDetail} onEditing={props.onEditing} userId={props.authUserId} userRol={props.authUserRol} creatorId={props.userData._id} title={post.title} description={post.description} creator={props.userData.username} createdAt={post.createdAt} imageUrl={post.imageUrl} category={post.category.name} />
+            return <PostItem className="col-md-6" key={post._id} postId={post._id} onDetail={props.onDetail} onEditing={props.onEditing} userId={props.authUserId} userRol={props.authUserRol} creatorId={props.userData._id} title={post.title} description={post.description} creator={props.userData.username} createdAt={post.createdAt} imageUrl={post.imageUrl} category={post.category.name} race={post.race.name}/>
         }
     })
     

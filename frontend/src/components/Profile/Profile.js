@@ -4,8 +4,6 @@ import {Redirect} from 'react-router-dom';
 //Imports from the project
 import PostsList from '../Posts/PostsList';
 import AuthContext from '../../context/auth-context';
-import '../../SCSS/profile.scss';
-import '../../SCSS/loading-spinner.scss';
 import PostCrud from '../../handlers/postCrud';
 
 class ProfilePage extends Component {
@@ -44,6 +42,10 @@ class ProfilePage extends Component {
                             title
                             description
                             category {
+                                _id
+                                name
+                            }
+                            race {
                                 _id
                                 name
                             }
@@ -95,7 +97,7 @@ class ProfilePage extends Component {
             <React.Fragment>
                 {this.state.hasError && <Redirect to="/404" />}
                 <div className="profile-container">
-                    <div className="profile-detail p-5 row mx-0">
+                    <div className="profile-detail p-5 row mx-auto container">
                         <div className="detail-left-side col-12 col-md-4 text-center">
                             <img src={`${this.state.userData.imageUrl ? this.state.userData.imageUrl : 'https://via.placeholder.com/350x320'}`} className="user-profile-image" width="150px" />
                             <p>{this.state.userData.username}</p>
