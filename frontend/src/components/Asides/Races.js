@@ -179,14 +179,14 @@ const RacesAside = props => {
                             <div className="categories-list">
                                 <div className="categories d-flex flex-column text-center">
                                     {(auth.token && auth.userRol === 'Admin') &&
-                                        <button className="btn btn-primary mb-3" onClick={startCreatingHandler}>Add new race</button>
+                                        <button className="btn btn-primary mb-3" onClick={startCreatingHandler}>Add new breed</button>
                                     }
                                     {isCreating &&
                                         <Modal title="Adding new race..." canCancel onCancel={modalCancelHandler} canConfirm onConfirm={createRace}>
                                             <CategoryForm nameEl={nameEl} descriptionEl={descriptionEl} iconEl={iconEl} />
                                         </Modal>
                                     }
-                                    <h3 className="aside-title">Races</h3>
+                                    <h3 className="aside-title">Breeds</h3>
                                     <hr />
                                     {racesList.map(race => <Link to={`/race/${race.name}`} key={race._id}><i className={`${race.icon} mr-2`} />{race.name}</Link>)}
                                 </div>

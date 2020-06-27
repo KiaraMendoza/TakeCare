@@ -16,6 +16,7 @@ const PostForm = props => {
         console.log(categoriesList, racesList);
     }, [categories, races])
 
+    
     return (
         <React.Fragment>
             <CategoriesContext.Consumer>

@@ -14,7 +14,7 @@ const PostItem = props => {
                 </div>
                 <div className="list-content pt-3">
                     <p className="list-category mb-0 pb-3">Category: {props.category}</p>
-                    <p className="list-category mb-0 pb-3">Race: {props.race}</p>
+                    <p className="list-category mb-0 pb-3">Breed: {props.race}</p>
                     <p className="list-description mb-0 pb-3">{props.description}</p>
                     <img className="list-image" src={props.imageUrl} />
                 </div>

@@ -5,6 +5,7 @@ const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date');
 const Category = require('../../models/category');
 const Race = require('../../models/race');
+const comment = require('../../models/comment');
 
 //Functions for making the relations between models
 const posts = async postsIds => {
@@ -64,6 +65,19 @@ const race = async raceId => {
     };
 };
 
+const comments = async commentsIds => {
+    try {
+        const comments = await Comment.find({ _id: { $in: commentsIds } });
+        return comments.map(comment => {
+            return transformComment(comment);
+        });
+    }
+    catch (err) {
+        throw err;
+    };
+};
+
+
 //Function for refactoring transforms
 const transformPost = post => {
     return {
@@ -72,6 +86,7 @@ const transformPost = post => {
         updatedAt: dateToString(post._doc.updatedAt),
         creator: user.bind(this, post.creator),
         category: category.bind(this, post.category),
+        comments: comments.bind(this, post.comments),
         race: race.bind(this, post.race)
     };
 };
@@ -93,7 +108,7 @@ const transformUpdatedPost = (post, args) => {
 const transformComment = comment => {
     return {
         ...comment._doc,
-        user: user.bind(this, comment._doc.user),
+        creator: user.bind(this, comment._doc.user),
         post: singlePost.bind(this, comment._doc.post),
         createdAt: dateToString(comment._doc.createdAt),
         updatedAt: dateToString(comment._doc.updatedAt)
@@ -103,7 +118,8 @@ const transformComment = comment => {
 const transformUser = singleUser => {
     return {
         ...singleUser._doc,
-        createdPosts: posts.bind(this, singleUser.createdPosts)
+        createdPosts: posts.bind(this, singleUser.createdPosts),
+        createdComments: comments.bind(this, singleUser.createdComments)
     };
 };
 
@@ -114,10 +130,10 @@ const transformCategory = singleCategory => {
     };
 };
 
-const transformRace = singleCategory => {
+const transformRace = singleRace => {
     return {
-        ...singleCategory._doc,
-        posts: posts.bind(this, singleCategory.posts)
+        ...singleRace._doc,
+        posts: posts.bind(this, singleRace.posts)
     };
 };
 

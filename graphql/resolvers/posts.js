@@ -22,7 +22,8 @@ module.exports = {
     postData: async (postId) => {
         try {
             const post = await Post.findById(postId);
-            const result = transformPost(post);
+            let result = transformPost(post);
+            console.log(result)
             return result;
         } catch (err) {
             throw err;

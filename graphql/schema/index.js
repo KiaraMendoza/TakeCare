@@ -94,6 +94,11 @@ module.exports = buildSchema(`
         icon: String!
     }
 
+    input CommentInput {
+        postId: String!
+        content: String!
+    }
+
     input UserInput {
         username: String!
         email: String!
@@ -110,6 +115,8 @@ module.exports = buildSchema(`
         categoryData(name: String!): Category!
         races: [Race!]!
         raceData(name: String!): Race!
+        postComments(postId: String): [Comment!]!
+        userComments(userId: String): [Comment!]!
     }
 
     type RootMutation {
@@ -119,6 +126,7 @@ module.exports = buildSchema(`
         createUser(userInput: UserInput): User
         createCategory(categoryInput: CategoryInput): Category
         createRace(raceInput: RaceInput): Race
+        createComment(commentInput: CommentInput): Comment
     }
 
     schema {
