@@ -23,7 +23,7 @@ module.exports = {
         try {
             const post = await Post.findById(postId);
             let result = transformPost(post);
-            console.log(result)
+            // console.log(result)
             return result;
         } catch (err) {
             throw err;

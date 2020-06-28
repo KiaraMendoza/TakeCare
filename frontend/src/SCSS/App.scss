@@ -70,14 +70,79 @@ main {
     text-align: center;
 }
 
+.see-aside {
+    top: 3vh;
+    color: #FFF;
+    font-size: 30px;
+    z-index: 5;
+}
+
+.see-aside-to-bottom {
+    top: 20vh;
+}
+
+.left-aside {
+    left: 15px;
+}
+
+.right-aside {
+    right: 15px;
+}
+
+.categories-aside, .races-aside {
+    display: none;
+    transition: all 1s;
+    .aside-content {
+        padding-top: 70px;
+    }
+}
+
+.mobile-aside {
+    position: fixed;
+    display: flex;
+    top: 0;
+    bottom: 0;
+    width: 50vw;
+    z-index: 3;
+    background-color: $secondaryColor;
+    padding: 0 2rem;
+}
+
+.see-right-aside {
+    @extend .mobile-aside;
+    right: 0;
+}
+
+.see-left-aside {
+    @extend .mobile-aside;
+    left: 0;
+}
+
 @media(min-width: $desktopBreak) {
     .main{
         max-width: 70%;
+    }
+    .races-aside {
+        display: flex;
+    }
+    .right-aside {
+        display: none;
     }
 }
 
 @media(min-width: $tabletBreak) and (max-width: $beforeDesktopBreak) {
     .main{
         max-width: 100%;
+    }
+    .categories-aside .aside-content {
+        padding-left: 50px;
+    }
+}
+@media(min-width: $tabletBreak) {
+    .categories-aside {
+        display: flex;
+    }
+    .left-aside {
+        display: none;
     }
 }

@@ -59,14 +59,28 @@ const PostsPage = (props) => {
         setPosts(fetchedData.posts);
     }, [fetchedData]);
 
+    const closeMenuHandler = () => {
+
+    }
+
+    const LeftMenuHandler = () => {
+        document.getElementById("left-aside").classList.toggle('see-left-aside');
+    };
+
+    const RightMenuHandler = () => {
+        document.getElementById("right-aside").classList.toggle('see-right-aside');
+    };
+
     return (
         <React.Fragment>
             <div className="posts-container row mx-0 position-relative justify-content-center">
-                <aside className="categories-aside d-none d-md-flex col-md-2"><CategoriesAside /></aside>
-                    <div className="post-page-content col-12 col-md-10 col-xl-8 px-0">
+                <aside id="left-aside" className="categories-aside col-6 col-md-4 col-lg-2"><CategoriesAside /></aside>
+                    <div className="post-page-content col-12 col-md-8 col-lg-10 col-xl-8 px-0">
                         <PostsPageContent posts={props.posts ? props.posts : false} data={props.data ? props.data : false } />
                     </div>
-                <aside className="info-aside d-none d-xl-flex col-xl-2 pl-0"><RacesAside /></aside>
+                <aside id="right-aside" className="races-aside col-6 col-xl-2 pl-lg-0"><RacesAside /></aside>
+                <div className="see-aside right-aside position-fixed"><i onClick={RightMenuHandler} className="fas fa-align-right"></i></div>
+                <div className="see-aside left-aside position-fixed"><i onClick={LeftMenuHandler} className="fas fa-align-left"></i></div>
             </div>
         </React.Fragment>
     )

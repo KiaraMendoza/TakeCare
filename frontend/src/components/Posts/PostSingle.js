@@ -209,7 +209,7 @@ class PostSingle extends Component {
                             </div>
                             <div className="comments-textarea-container">
                                 <form onSubmit={this.submitHandler}>
-                                    <textarea id="comment-textarea" className="comments-textarea w-100 h-100" placeholder="Insert new comment"></textarea>
+                                    <textarea id="comment-textarea" rows="4" className="comments-textarea w-100 h-100" placeholder="Insert new comment" maxLength="550"></textarea>
                                 </form>
                                 <button className="btn btn-secondary w-50 rounded-0" onClick={this.cancelButton}>Cancel</button>
                                 <button className="btn btn-primary w-50 rounded-0" onClick={this.addComment}>Send</button>

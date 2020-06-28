@@ -7,16 +7,24 @@ import '../SCSS/navbar.scss';
 
 //Dynamic Navbar component that changes if loged in
 const Navbar = props => {
+    
+    const mobileMenuHandler = () => {
+        document.getElementById("navbar").classList.toggle('d-inline-block')
+    }
+
     return (
         <AuthContext.Consumer>
             {/* Using the AuthContext to access some app states only if token */}
             {(context) => {
                 return (
-                    <header className="main-navigation">
+                    <header className="main-navigation px-4 py-4 py-md-0 d-flex">
                         <div className="navbar-logo">
-                            <NavLink to="/posts"><h1>TakeCare!</h1></NavLink>
+                            <NavLink to="/posts"><h1 className="d-inline-block">TakeCare!</h1></NavLink>
+                            <div className="mobile-menu-button ml-4 pl-3 d-inline-block d-md-none">
+                                <i onClick={mobileMenuHandler} className="fas fa-bars"></i>
+                            </div>
                         </div>
-                        <nav className="navbar-list">
+                        <nav id="navbar" className="navbar-list">
                             <ul>
                                 {!context.token && (
                                     <li>
