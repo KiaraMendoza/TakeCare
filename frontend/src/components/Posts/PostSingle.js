@@ -69,7 +69,7 @@ class PostSingle extends Component {
             `
         }
 
-        fetch('http://localhost:8000/graphql', {
+        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
@@ -134,7 +134,7 @@ class PostSingle extends Component {
         const token = this.context.token;
 
         //We need to use our token when creating posts
-        fetch('http://localhost:8000/graphql', {
+        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
@@ -195,13 +195,13 @@ class PostSingle extends Component {
                                     return (
                                         <div className="comment mb-3">
                                             <div className="comment-user">
-                                                <p><i class="fas fa-user mr-2"></i>Uri</p>
+                                                <p><i className="fas fa-user mr-2"></i>Uri</p>
                                             </div>
                                             <div className="comment-data">
                                                 <p>{comment.content}</p>
                                             </div>
                                             <div className="comment-extras">
-                                                <i class="far fa-heart mr-4"></i><i class="far fa-thumbs-down"></i>
+                                                <i className="far fa-heart mr-4"></i><i className="far fa-thumbs-down"></i>
                                             </div>
                                         </div>
                                     )

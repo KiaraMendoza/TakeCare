@@ -61,7 +61,7 @@ export const RaceSingle = (props) => {
         <React.Fragment>
             <div className="post-category-container row mx-0">
                 <div className="go-to-post-page d-none d-md-flex col col-md-2">
-                    <Link className="go-back-button" to="/posts"><i class="fas fa-arrow-circle-left mr-2"></i>To main page</Link>
+                    <Link className="go-back-button" to="/posts"><i className="fas fa-arrow-circle-left mr-2"></i>To main page</Link>
                 </div>
             </div>
             <PostsPage posts={racesData ? racesData.posts : false} title={racesData ? racesData.name : ''} description={racesData ? racesData.description : ''} />

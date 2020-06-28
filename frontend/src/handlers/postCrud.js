@@ -105,7 +105,7 @@ class PostCrud extends Component {
         const token = this.context.token;
 
         //We need to use our token when creating posts
-        fetch('http://localhost:8000/graphql', {
+        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
@@ -179,7 +179,7 @@ class PostCrud extends Component {
         const token = this.context.token;
 
         //We need to use our token when creating/editing posts
-        fetch('http://localhost:8000/graphql', {
+        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
@@ -226,7 +226,7 @@ class PostCrud extends Component {
         const token = this.context.token;
 
         //We need to use our token when creating/editing posts
-        fetch('http://localhost:8000/graphql', {
+        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {

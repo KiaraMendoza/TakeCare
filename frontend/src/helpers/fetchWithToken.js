@@ -9,7 +9,7 @@ export const useFetchWithToken = (requestBody) => {
     useEffect(() => {
         setIsLoading(true);
         if (token) {
-            fetch('http://localhost:8000/graphql', {
+            fetch('https://takecare-socialapp.herokuapp.com/graphql', {
                 method: 'POST',
                 body: JSON.stringify(requestBody),
                 headers: {

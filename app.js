@@ -45,7 +45,7 @@ app.use(isAuth);
 app.use('/graphql', graphqlHttp({
     schema: graphQlSchema,
     rootValue: graphQlResolvers,
-    graphiql: true
+    graphiql: process.env.NODE_ENV === 'development',
 }));
 
 // Serve stactic assets if in production
