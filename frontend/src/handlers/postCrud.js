@@ -5,9 +5,11 @@ import Modal from '../modal/modal';
 import AuthContext from '../context/auth-context';
 import PostsList from '../components/Posts/PostsList';
 import PostForm from '../components/Posts/PostForm';
-import Overlay from '../components/Overlay';
+//import Overlay from '../components/Overlay';
 //import useFetchWithToken from '../helpers/fetchWithToken';
  
+const Overlay = props => <div className="black-overlay"></div>;
+
 class PostCrud extends Component {
     state = {
         posts: [],
