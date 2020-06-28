@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import { Redirect, NavLink } from 'react-router-dom';
 
 import Modal from '../modal/modal';
-import Overlay from '../components/Overlay';
 import AuthContext from '../context/auth-context';
 import PostsList from '../components/Posts/PostsList';
 import PostForm from '../components/Posts/PostForm';
-import { Redirect, NavLink } from 'react-router-dom';
+import Overlay from '../components/Overlay';
 //import useFetchWithToken from '../helpers/fetchWithToken';
  
 class PostCrud extends Component {
