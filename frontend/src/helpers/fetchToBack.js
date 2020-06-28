@@ -8,7 +8,7 @@ export const useFetchToBack = (requestBody, dependencies) => {
         
     useEffect(() => {
         setIsLoading(true);
-        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
+        fetch('https://takecare-socialapp.herokuapp.com:8000/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
