@@ -17,8 +17,6 @@ import PostSingle from './components/Posts/PostSingle';
 import { CategorySingle } from './components/Categories/CategorySingle';
 import { RaceSingle } from './components/Categories/RaceSingle';
 
-console.log(process.env);
-
 class App extends Component {
   setCategories = categories => {
     this.setState({ categories });
