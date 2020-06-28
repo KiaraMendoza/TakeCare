@@ -69,7 +69,7 @@ class PostSingle extends Component {
             `
         }
 
-        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
+        fetch(`${process.env.REACT_APP_SERVER_URL}graphql`, {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
@@ -134,7 +134,7 @@ class PostSingle extends Component {
         const token = this.context.token;
 
         //We need to use our token when creating posts
-        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
+        fetch(`${process.env.REACT_APP_SERVER_URL}graphql`, {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {

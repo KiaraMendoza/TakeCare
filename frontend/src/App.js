@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-import "isomorphic-fetch"
+import "isomorphic-fetch";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css'; 
@@ -16,6 +16,8 @@ import ProfilePage from './components/Profile/Profile';
 import PostSingle from './components/Posts/PostSingle';
 import { CategorySingle } from './components/Categories/CategorySingle';
 import { RaceSingle } from './components/Categories/RaceSingle';
+
+console.log(process.env);
 
 class App extends Component {
   setCategories = categories => {

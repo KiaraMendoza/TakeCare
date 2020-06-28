@@ -62,7 +62,7 @@ const RacesAside = props => {
         const token = auth.token;
 
         //We need to use our token when creating posts
-        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
+        fetch(`${process.env.REACT_APP_SERVER_URL}graphql`, {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
@@ -135,7 +135,7 @@ const RacesAside = props => {
         const token = auth.token;
 
         //We need to use our token when creating posts
-        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
+        fetch(`${process.env.REACT_APP_SERVER_URL}graphql`, {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {

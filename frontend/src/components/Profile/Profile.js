@@ -64,7 +64,7 @@ class ProfilePage extends Component {
             `
         }
 
-        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
+        fetch(`${process.env.REACT_APP_SERVER_URL}graphql`, {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
