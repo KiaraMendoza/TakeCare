@@ -74,7 +74,7 @@ class LoginPage extends Component {
             };
         }
 
-        fetch('https://takecare-socialapp.herokuapp.com:8000/graphql', {
+        fetch('https://takecare-socialapp.herokuapp.com/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
