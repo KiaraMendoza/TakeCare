@@ -3,23 +3,27 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
 const mongoose = require('mongoose');
+const path = require('path');
 //Requires from the project
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
 const isAuth = require('./middleware/is-auth');
+require('dotenv').config();
 //MongoDB variables connections
-const url = 'mongodb://127.0.0.1:27017/takecare';
+//const url = 'mongodb://127.0.0.1:27017/takecare'; //For local connection
+const uri = process.env.ATLAS_URI;
 const app = express();
-//MongoDB connection
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
+const port = process.env.PORT || 8000;
+//MongoDB Local connection
+//mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+//const db = mongoose.connection;
 
-db.once('open', _ => {
-    console.log('Database connected:', url)
-})
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }
+);
+const connection = mongoose.connection;
 
-db.on('error', err => {
-    console.error('Connection error:', err)
+connection.once('open', () => {
+  console.log("MongoDB database connection established successfully");
 })
 
 app.use(bodyParser.json());
@@ -44,53 +48,16 @@ app.use('/graphql', graphqlHttp({
     graphiql: true
 }));
 
-app.listen(8000);
+// Serve stactic assets if in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('frontend/build'));
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+  });
+};
 
-/* Example of mutation's query */
-
-/* Create Event
-mutation {
-  createEvent(eventInput: {
-    title: "Kissing Oriol",
-    description: "Kissing Oriol all the Night and maybe something else",
-    price: 1.5,
-    date: "2020-06-03"
-  }) {
-    _id
-    title
-    description
-    price
-    date
-    creator {
-        username
-    }
-  }
-} 
-*/
-
-/* Create User
-mutation {
-  createUser(userInput: {
-    username: "kiara",
-    email: "kiara@test.com",
-    password: "kiara1234"
-  }) {
-    username
-    email
-  }
-}
-*/
-
-/* Example of query */
-
-/*
-query {
-  posts {
-    title
-    creator {
-      username
-      email
-    }
-  }
-}
-*/
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
+});
