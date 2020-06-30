@@ -5,7 +5,6 @@ const User = require('../../models/user');
 const { dateToString } = require('../../helpers/date');
 const Category = require('../../models/category');
 const Race = require('../../models/race');
-const comment = require('../../models/comment');
 
 //Functions for making the relations between models
 const posts = async postsIds => {
@@ -78,6 +77,16 @@ const comments = async commentsIds => {
     };
 };
 
+const commentSingle = async commentId => {
+    try {
+        const comment = await Comment.findById(commentId);
+        return transformComment(comment);
+    }
+    catch (err) {
+        throw err;
+    };
+};
+
 
 //Function for refactoring transforms
 const transformPost = post => {
@@ -144,3 +153,4 @@ exports.transformComment = transformComment;
 exports.transformUser = transformUser;
 exports.transformCategory = transformCategory;
 exports.transformRace = transformRace;
+exports.commentSingle = commentSingle;

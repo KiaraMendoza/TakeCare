@@ -2,7 +2,7 @@
 const Comment = require('../../models/comment');
 const Post = require('../../models/post');
 const User = require('../../models/user');
-const { transformComment, transformPost, transformUser } = require('./merge');
+const { transformComment, transformPost, transformUser, commentSingle } = require('./merge');
 
 module.exports = {
     createComment: async (args, req) => {
@@ -32,19 +32,23 @@ module.exports = {
         }
     },
     postComments: async (args) => {
-        const post = await Post.findById(args.postId);
-        //const transformedPost = transformPost(post);
-        const comments = post.comments.map(comment => transformComment(comment));
-
-        console.log(`transformComment(comments): ${post.comments}`);
-
-        return comments;
+        try {
+            const post = await Post.findById(args.postId);
+            return post.comments.map(comment => {
+                return commentSingle(comment);
+            });
+        } catch (err) {
+            throw err;
+        }
     },
     userComments: async (args) => {
-        const user = await User.findById(args.userId);
-        const transformedUser = transformUser(user);
-        const comments = transformedUser.createdComments.map(comment => comment);
-
-        return comments;
+        try {
+            const user = await User.findById(args.userId);
+            return user.createdComments.map(comment => {
+                return commentSingle(comment);
+            });
+        } catch(err) {
+            throw err;
+        }
     }
 };

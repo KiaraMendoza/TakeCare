@@ -28,17 +28,14 @@
         list-style: none;
         padding: 0;
     }
-    .list-left-content {
-        width: 40%;
+    .list-content, .list-title {
+        cursor: pointer;
     }
     .list-title {
         font-size: 1.8rem;
     }
     .list-price {
         font-size: 1.3rem;
-    }
-    .list-right-content {
-        width: 40%;
     }
     .posts-list-item {
         border: 1px solid #FFF;
@@ -92,6 +89,25 @@
         border-bottom: 1px solid;
     }
 }
+.comment-extras {
+}
+
+.comment-user {
+        margin-bottom: 1rem;
+    a {
+        color: #FFF;
+        text-decoration: none;
+        transition: all 0.5s;
+        &:hover {
+            text-decoration: none;
+            color: #0f0f0f;
+            background-color: $desertStorm;
+            padding: 0.5rem;
+            font-weight: bold;
+        }
+    }
+}
+
 .comments-textarea-container {
     textarea {
         border: 0;

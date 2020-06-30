@@ -10,9 +10,9 @@ const PostItem = props => {
         <div className={`col-12 my-5 p-4 ${props.className}`}>
             <div key={props._id} className="posts-list-item p-4">
                 <div className="list-header d-flex justify-content-between">
-                    <h3 className="list-title pr-3 mb-0">{props.title}</h3>
+                    <h3 onClick={props.onDetail.bind(this, props.postId)} className="list-title pr-3 mb-0">{props.title}</h3>
                 </div>
-                <div className="list-content pt-3">
+                <div onClick={props.onDetail.bind(this, props.postId)} className="list-content pt-3">
                     <p className="list-category mb-0 pb-3">Category: {props.category}</p>
                     <p className="list-category mb-0 pb-3">Breed: {props.race}</p>
                     <p className="list-description mb-0 pb-3">{props.description}</p>

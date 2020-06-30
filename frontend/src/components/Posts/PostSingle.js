@@ -238,9 +238,9 @@ class PostSingle extends Component {
                     <div className="col-lg-2 d-none d-lg-flex">
                         <CategoriesAside />
                     </div>
-                    <div className="post-single-data px-4 col-12 col-lg-8">
+                    <div className="post-single-data px-5 col-12 col-lg-8">
                         <div className="post-data mb-5">
-                            <h1>{this.state.postData.title}</h1>
+                            <h1 className="pb-2">{this.state.postData.title}</h1>
                             <p>{this.state.postData.description}</p>
                             <p>Created by: {this.state.userData.username}</p>
                             <div className="image-background">
@@ -250,12 +250,12 @@ class PostSingle extends Component {
                         <div className="post-comments px-0 justify-content-between my-5">
                             <div className="comments-title-container px-4"><h2>Comments:</h2></div>
                             <div className="comments px-4 pt-3">
-                                {/* {!this.state.isLoading &&
+                                {!this.state.isLoading &&
                                     this.state.commentsData.map(comment => { 
                                         return (
                                             <div className="comment mb-3">
                                                 <div className="comment-user">
-                                                    <p><i className="fas fa-user mr-2"></i>Uri</p>
+                                                    <a href={`/profile/${comment.creator._id}`}><i className="fas fa-user mr-2"></i>{comment.creator.username}</a>
                                                 </div>
                                                 <div className="comment-data">
                                                     <p>{comment.content}</p>
@@ -266,7 +266,7 @@ class PostSingle extends Component {
                                             </div>
                                         )
                                     })
-                                } */}
+                                }
                             </div>
                             <div className="comments-textarea-container">
                                 <form onSubmit={this.submitHandler}>
