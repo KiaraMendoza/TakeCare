@@ -5,7 +5,6 @@ import authContext from '../../context/auth-context';
 import CategoriesContext from '../../context/categories-context';
 import CategoryForm from '../Categories/CategoryForm';
 import Modal from '../../modal/modal';
-import { CategorySingle } from '../Categories/CategorySingle';
 
 //const categories = ['Husky', 'German shepard', 'Yorkshire', 'Chihuaha', 'Checoslovaquian WD'];
 

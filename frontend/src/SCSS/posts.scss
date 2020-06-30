@@ -24,7 +24,6 @@
 .posts-list-container {
     width: 100%;
     .posts-list {
-        width: 80%;
         margin: 2rem auto;
         list-style: none;
         padding: 0;
@@ -84,6 +83,7 @@
 }
 .comments {
     min-height: 200px;
+    max-height: 550px;
     overflow-y: scroll;
     border-top: 2px solid $ternaryColor;
     border-bottom: 2px solid $ternaryColor;
@@ -116,6 +116,12 @@
 
 @media(min-width: $tabletBreak) and (max-width: $beforeDesktopBreak) {
     
+}
+
+@media(min-width: $tabletBreak) {
+    .posts-list-container .posts-list {
+        width: 80%;
+    }
 }
 
 @media(max-width:340px) {

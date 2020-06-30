@@ -9,7 +9,6 @@ module.exports = {
         if (!req.isAuth) {
             throw new Error('You don\'t have permission to do that');
         }
-        console.log('Holaa?');
         const comment = new Comment({
             content: args.commentInput.content,
             post: args.commentInput.postId,
@@ -34,8 +33,10 @@ module.exports = {
     },
     postComments: async (args) => {
         const post = await Post.findById(args.postId);
-        const transformedPost = transformPost(post);
-        const comments = transformedPost.comments.map(comment => comment);
+        //const transformedPost = transformPost(post);
+        const comments = post.comments.map(comment => transformComment(comment));
+
+        console.log(`transformComment(comments): ${post.comments}`);
 
         return comments;
     },

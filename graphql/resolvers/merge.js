@@ -34,7 +34,8 @@ const user = async userId => {
         const user = await User.findById(userId);
         return {
             ...user._doc,
-            createdPosts: posts.bind(this, user._doc.createdPosts)
+            createdPosts: posts.bind(this, user._doc.createdPosts),
+            createdComments: comments.bind(this, user._doc.createdComments)
         };
     } catch (err) {
         throw err;
@@ -108,8 +109,8 @@ const transformUpdatedPost = (post, args) => {
 const transformComment = comment => {
     return {
         ...comment._doc,
-        creator: user.bind(this, comment._doc.user),
-        post: singlePost.bind(this, comment._doc.post),
+        creator: user.bind(this, comment.creator),
+        post: singlePost.bind(this, comment.post),
         createdAt: dateToString(comment._doc.createdAt),
         updatedAt: dateToString(comment._doc.updatedAt)
     }

@@ -22,6 +22,7 @@ class PostSingle extends Component {
     componentDidMount(){
         this.fetchPostData();
         console.log(this.state.currentPostId)
+        this.fetchForComments();
     }
 
     fetchPostData() {
@@ -31,9 +32,7 @@ class PostSingle extends Component {
         
         if (this.props.post) {
             const postId = this.props.post._id;
-            this.setState({ currentPostId: `${postId}` });
         }
-        this.setState({ currentPostId: `${postId}` });
 
         const requestBody = {
             query: `
@@ -59,10 +58,6 @@ class PostSingle extends Component {
                             email
                             rol
                             imageUrl
-                        }
-                        comments {
-                            _id
-                            content
                         }
                     }
                 }
@@ -91,7 +86,62 @@ class PostSingle extends Component {
             const resPostData = resData.data.postData;
             console.log('resPostData ', resPostData)
             this.setState({ postData: resPostData, isLoading: false, userData: resPostData.creator, raceData: resPostData.race, categoryData: resPostData.category });
-            this.setState({ commentsData: resPostData.comments })
+            
+        })
+        .catch(err => {
+            this.setState({ isLoading: false, hasError: true });
+            throw err;
+        });
+    }
+
+    fetchForComments = () => {
+        this.setState({ isLoading: true });
+
+        let postId = this.props.match.params.id;
+
+        if (this.props.post) {
+            const postId = this.props.post._id;
+        }
+
+        const requestBody = {
+            query: `
+                query {
+                    postComments(postId : "${postId}") {
+                        _id
+                        content
+                        creator {
+                            _id
+                            username
+                            imageUrl
+                        }
+                    }
+                }
+            `
+        }
+
+        fetch(`${process.env.REACT_APP_SERVER_URL}graphql`, {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                this.setState({ hasError: true });
+            }
+            return res.json();
+        })
+        .then(resData => {
+            if (!resData.data) {
+                this.setState({ isLoading: false, hasError: true });
+                console.log('Error 404', resData);
+                return;
+            }
+            const resCommentsData = resData.data.postComments;
+            console.log('resCommentsData ', resCommentsData)
+            this.setState({ commentsData: resCommentsData });
+            this.setState({ isLoading: false });
         })
         .catch(err => {
             this.setState({ isLoading: false, hasError: true });
@@ -102,6 +152,8 @@ class PostSingle extends Component {
     addComment = () => {
         const commentContent = document.getElementById("comment-textarea").value;
         let postId = this.props.match.params.id;
+
+        this.setState({ isLoading: true });
 
         if (this.props.post) {
             const postId = this.props.post._id;
@@ -114,17 +166,6 @@ class PostSingle extends Component {
                     createComment(commentInput: { postId: "${postId}", content: "${commentContent}"} ) {
                         _id
                         content
-                        creator {
-                            _id
-                            username
-                        }
-                        post {
-                            _id
-                            title
-                            description
-                        }
-                        createdAt
-                        updatedAt
                     }
                 }
             `
@@ -152,7 +193,15 @@ class PostSingle extends Component {
         .then(resData => {
             const createdComment = resData.data.createComment;
             console.log(resData.data);
-            return createdComment;
+            this.setState(prevState => {
+                const updatedComments = [...prevState.commentsData];
+                updatedComments.push(createdComment);
+
+                return { commentsData: updatedComments };
+            });
+
+            this.setState({ isLoading: false });
+            document.getElementById("comment-textarea").value = '';
         })
         .catch(err => {
             throw err;
@@ -167,6 +216,16 @@ class PostSingle extends Component {
         return document.getElementById("comment-textarea").value = '';
     }
 
+    LeftMenuHandler = () => {
+        document.getElementById("left-aside").classList.toggle('see-left-aside');
+        document.getElementById("right-aside").classList.remove('see-right-aside');
+    };
+
+    RightMenuHandler = () => {
+        document.getElementById("right-aside").classList.toggle('see-right-aside');
+        document.getElementById("left-aside").classList.remove('see-left-aside');
+    };
+
     render() {
         console.log("Comments data" + this.state.commentsData)
         return (
@@ -179,7 +238,7 @@ class PostSingle extends Component {
                     <div className="col-lg-2 d-none d-lg-flex">
                         <CategoriesAside />
                     </div>
-                    <div className="post-single-data col-12 col-lg-8">
+                    <div className="post-single-data px-4 col-12 col-lg-8">
                         <div className="post-data mb-5">
                             <h1>{this.state.postData.title}</h1>
                             <p>{this.state.postData.description}</p>
@@ -191,21 +250,23 @@ class PostSingle extends Component {
                         <div className="post-comments px-0 justify-content-between my-5">
                             <div className="comments-title-container px-4"><h2>Comments:</h2></div>
                             <div className="comments px-4 pt-3">
-                                {this.state.commentsData.map(comment => { 
-                                    return (
-                                        <div className="comment mb-3">
-                                            <div className="comment-user">
-                                                <p><i className="fas fa-user mr-2"></i>Uri</p>
+                                {/* {!this.state.isLoading &&
+                                    this.state.commentsData.map(comment => { 
+                                        return (
+                                            <div className="comment mb-3">
+                                                <div className="comment-user">
+                                                    <p><i className="fas fa-user mr-2"></i>Uri</p>
+                                                </div>
+                                                <div className="comment-data">
+                                                    <p>{comment.content}</p>
+                                                </div>
+                                                <div className="comment-extras">
+                                                    <i className="far fa-heart mr-4"></i><i className="far fa-thumbs-down"></i>
+                                                </div>
                                             </div>
-                                            <div className="comment-data">
-                                                <p>{comment.content}</p>
-                                            </div>
-                                            <div className="comment-extras">
-                                                <i className="far fa-heart mr-4"></i><i className="far fa-thumbs-down"></i>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
+                                        )
+                                    })
+                                } */}
                             </div>
                             <div className="comments-textarea-container">
                                 <form onSubmit={this.submitHandler}>

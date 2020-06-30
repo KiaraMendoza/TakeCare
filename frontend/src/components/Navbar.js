@@ -17,7 +17,7 @@ const Navbar = props => {
             {/* Using the AuthContext to access some app states only if token */}
             {(context) => {
                 return (
-                    <header className="main-navigation px-4 py-4 py-md-0 d-flex">
+                    <header className="main-navigation px-4 py-2 py-md-0 d-flex">
                         <div className="navbar-logo">
                             <NavLink to="/posts"><h1 className="d-inline-block">TakeCare!</h1></NavLink>
                             <div className="mobile-menu-button ml-4 pl-3 d-inline-block d-md-none">

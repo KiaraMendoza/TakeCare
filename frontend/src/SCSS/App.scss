@@ -22,6 +22,7 @@ main {
     max-height: 100%;
     color: #FFF;
     padding-top: 150px;
+    overflow-x: hidden;
 }
 
 .footer-content {
@@ -62,7 +63,7 @@ main {
     width: 100vw;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 3;
 }
 
 .image-background {
@@ -70,52 +71,53 @@ main {
     text-align: center;
 }
 
-.see-aside {
-    top: 3vh;
+.see-aside-buttons {
+    top: 1vh;
     color: #FFF;
     font-size: 30px;
-    z-index: 5;
+    z-index: 3;
 }
 
 .see-aside-to-bottom {
     top: 20vh;
 }
 
-.left-aside {
+.left-aside-button {
     left: 15px;
 }
 
-.right-aside {
+.right-aside-button {
     right: 15px;
 }
 
-.categories-aside, .races-aside {
-    display: none;
-    transition: all 1s;
-    .aside-content {
-        padding-top: 70px;
-    }
+.categories-aside {
+    width: 50vw;
+    transform: translateX(-150%);
 }
 
-.mobile-aside {
-    position: fixed;
-    display: flex;
+.races-aside {
+    transform: translateX(250%);
+}
+
+.categories-aside, .races-aside {
+    position: absolute;
     top: 0;
     bottom: 0;
-    width: 50vw;
-    z-index: 3;
+    z-index: 2;
     background-color: $secondaryColor;
     padding: 0 2rem;
+    transition: all 0.5s;
 }
 
+
 .see-right-aside {
-    @extend .mobile-aside;
     right: 0;
+    transform: translateX(0) !important;
 }
 
 .see-left-aside {
-    @extend .mobile-aside;
     left: 0;
+    transform: translateX(0) !important;
 }
 
 @media(min-width: $desktopBreak) {
@@ -123,9 +125,11 @@ main {
         max-width: 70%;
     }
     .races-aside {
-        display: flex;
+        background-color: transparent;
+        position: relative;
+        transform: translateX(0);
     }
-    .right-aside {
+    .right-aside-button {
         display: none;
     }
 }
@@ -140,9 +144,22 @@ main {
 }
 @media(min-width: $tabletBreak) {
     .categories-aside {
-        display: flex;
+        background-color: transparent;
+        position: relative;
+        transform: translateX(0);
+        padding: 0;
     }
-    .left-aside {
+    .left-aside-button {
         display: none;
     }
+    .races-aside {
+        width: 30vw;
+    }
 }
+
+@media(max-width: $beforetabletBreak) {
+    .races-aside {
+        width: 50vw;
+    }
+}
+
