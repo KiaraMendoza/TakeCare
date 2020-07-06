@@ -15,6 +15,8 @@ class PostSingle extends Component {
         categoryData: {},
         commentsData: [],
         currentPostId: "",
+        editingComment: null,
+        newCommentContent: null,
     }
 
     static contextType = AuthContext;
@@ -166,6 +168,11 @@ class PostSingle extends Component {
                     createComment(commentInput: { postId: "${postId}", content: "${commentContent}"} ) {
                         _id
                         content
+                        creator {
+                            _id
+                            username
+                            imageUrl
+                        }
                     }
                 }
             `
@@ -192,12 +199,126 @@ class PostSingle extends Component {
         })
         .then(resData => {
             const createdComment = resData.data.createComment;
-            console.log(resData.data);
+            console.log(resData.data.createComment);
             this.setState(prevState => {
                 const updatedComments = [...prevState.commentsData];
                 updatedComments.push(createdComment);
 
                 return { commentsData: updatedComments };
+            });
+
+            this.setState({ isLoading: false });
+            document.getElementById("comment-textarea").value = '';
+            return createdComment;
+        })
+        .catch(err => {
+            throw err;
+        });
+    }
+
+    editingComment = (commentId) => {
+        this.setState({ editingComment: commentId })
+    }
+
+    editComment = (content) => {
+        this.setState({ isLoading: true });
+
+        const requestBody = {
+            query: `
+                mutation {
+                    updateComment(commentEditInput: { commentId: "${this.state.editingComment}", content: "${content}"} ) {
+                        _id
+                        content
+                        creator {
+                            _id
+                            username
+                            imageUrl
+                        }
+                    }
+                }
+            `
+        }
+
+        //Using our AuthContext we can get the user's token
+        const token = this.context.token;
+
+        //We need to use our token when creating posts
+        fetch(`${process.env.REACT_APP_SERVER_URL}graphql`, {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Error al editar');
+            }
+            return res.json();
+        })
+        .then(resData => {
+            const updatedComment = resData.data.updateComment;
+            console.log(resData.data);
+            this.setState({ isLoading: false });
+            document.getElementById("comment-textarea").value = '';
+            return updatedComment;
+        })
+        .catch(err => {
+            throw err;
+        });
+    }
+
+    _handleKeyDown = (e) => {
+        console.log(e.target.innerHTML.trim());
+        if (e.key === 'Enter') {
+            this.setState({ isLoading: true });
+            console.log(`Enter: ${e.target.innerHTML}`);
+            const content = e.target.innerHTML.trim();
+            this.editComment(content);
+        }
+    }
+
+    deletingComment = (commentId) => {
+
+        this.setState({ isLoading: true });
+        const requestBody = {
+            query: `
+                mutation {
+                    deleteComment( _id: "${commentId}" ) {
+                        _id
+                        content
+                    }
+                }
+            `
+        }
+
+        //Using our AuthContext we can get the user's token
+        const token = this.context.token;
+
+        //We need to use our token when creating posts
+        fetch(`${process.env.REACT_APP_SERVER_URL}graphql`, {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(res => {
+            if (res.status !== 200 && res.status !== 201) {
+                throw new Error('Error al borrar');
+            }
+            return res.json();
+        })
+        .then(resData => {
+            const deletedComment = resData.data.deleteComment;
+            console.log(resData.data);
+            this.setState(prevState => {
+                const updatedComments = [...prevState.commentsData];
+                const filteredComments = updatedComments.filter(comment => comment._id != deletedComment._id);
+
+                return { commentsData: filteredComments };
             });
 
             this.setState({ isLoading: false });
@@ -235,9 +356,7 @@ class PostSingle extends Component {
                     <div className="go-to-post-page position-absolute">
                         <Link className="go-back-button" to="/posts"><i className="fas fa-arrow-circle-left mr-2"></i>To posts page</Link>
                     </div>
-                    <div className="col-lg-2 d-none d-lg-flex">
-                        <CategoriesAside />
-                    </div>
+                    <aside id="right-aside" className="races-aside col-xl-2 pl-xl-0"><RacesAside /></aside>
                     <div className="post-single-data px-5 col-12 col-lg-8">
                         <div className="post-data mb-5">
                             <h1 className="pb-2">{this.state.postData.title}</h1>
@@ -253,15 +372,23 @@ class PostSingle extends Component {
                                 {!this.state.isLoading &&
                                     this.state.commentsData.map(comment => { 
                                         return (
-                                            <div className="comment mb-3">
+                                            <div className="comment mb-3" key={comment._id}>
                                                 <div className="comment-user">
                                                     <a href={`/profile/${comment.creator._id}`}><i className="fas fa-user mr-2"></i>{comment.creator.username}</a>
                                                 </div>
                                                 <div className="comment-data">
-                                                    <p>{comment.content}</p>
+                                                    <p contentEditable={(this.state.editingComment && this.context.userId == comment.creator._id) ? true : false} onKeyDown={this._handleKeyDown} suppressContentEditableWarning={true}>
+                                                        {comment.content}
+                                                    </p>
                                                 </div>
-                                                <div className="comment-extras">
-                                                    <i className="far fa-heart mr-4"></i><i className="far fa-thumbs-down"></i>
+                                                <div className="comment-extras d-flex justify-content-between align-items-center mr-2">
+                                                    <div className="comment-rates d-inline"><i className="far fa-heart mr-4"></i><i className="far fa-thumbs-down"></i></div>
+                                                    {comment.creator._id == this.context.userId &&
+                                                        <div className="comment-buttons d-inline">
+                                                            <button onClick={this.editingComment.bind(this, comment._id)} className="btn btn-secondary mr-2">Edit</button>
+                                                            <button onClick={this.deletingComment.bind(this, comment._id)} className="btn btn-danger">Delete</button>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                         )
@@ -277,9 +404,9 @@ class PostSingle extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col-lg-2 d-none d-lg-flex">
-                        <RacesAside />
-                    </div>
+                    <aside id="left-aside" className="categories-aside col-md-4 col-lg-2"><CategoriesAside /></aside>
+                    <div className="see-aside-buttons right-aside-button position-fixed"><i onClick={this.RightMenuHandler} className="fas fa-align-right"></i></div>
+                    <div className="see-aside-buttons left-aside-button position-fixed"><i onClick={this.LeftMenuHandler} className="fas fa-align-left"></i></div>
                 </div>
             </React.Fragment>
         );

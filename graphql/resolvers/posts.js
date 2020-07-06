@@ -154,9 +154,7 @@ module.exports = {
         await Race.update({ _id: getPostToDelete.race }, { posts: updatedRacePosts ? updatedRacePosts : [] });
 
         try {
-            // const deletePostOnCreator = await remove(creator.createdPosts, args._id);
             const deletedPost = await Post.findByIdAndDelete(args._id);
-            // console.log(`deletedPost: ${deletedPost}, creator: ${creator}, deletingPostId: ${args._id}`);
             return deletedPost;
         } catch (err) {
             throw err;

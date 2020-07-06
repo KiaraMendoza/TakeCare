@@ -99,6 +99,11 @@ module.exports = buildSchema(`
         content: String!
     }
 
+    input CommentEditInput {
+        commentId: String!
+        content: String!
+    }
+
     input UserInput {
         username: String!
         email: String!
@@ -127,6 +132,8 @@ module.exports = buildSchema(`
         createCategory(categoryInput: CategoryInput): Category
         createRace(raceInput: RaceInput): Race
         createComment(commentInput: CommentInput): Comment
+        updateComment(commentEditInput: CommentEditInput ): Comment
+        deleteComment(_id: String!): Comment
     }
 
     schema {
