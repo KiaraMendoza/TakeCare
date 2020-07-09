@@ -90,13 +90,25 @@ main {
     right: 15px;
 }
 
+.post-single-container {
+    .categories-aside {
+        transform: translateX(-150%);
+    }
+    .races-aside {
+        width: 50vw;
+        transform: translateX(250%);
+    }
+}
+
 .categories-aside {
     width: 50vw;
     transform: translateX(-150%);
+    left: 0;
 }
 
 .races-aside {
     transform: translateX(250%);
+    right: 0;
 }
 
 .categories-aside, .races-aside {
@@ -106,17 +118,15 @@ main {
     z-index: 2;
     background-color: $secondaryColor;
     padding: 0 2rem;
-    transition: all 0.5s;
+    transition: 1s all;
 }
 
 
 .see-right-aside {
-    right: 0;
     transform: translateX(0) !important;
 }
 
 .see-left-aside {
-    left: 0;
     transform: translateX(0) !important;
 }
 
@@ -124,7 +134,19 @@ main {
     .main{
         max-width: 70%;
     }
-    .races-aside {
+    .post-single-container {
+        .categories-aside, .races-aside {
+            transform: translateX(0);
+            background-color: transparent;
+            position: relative;
+            padding: 0;
+        }
+        
+        .right-aside-button {
+            display: none;
+        }
+    }
+    .posts-container .races-aside {
         background-color: transparent;
         position: relative;
         transform: translateX(0);
@@ -143,7 +165,7 @@ main {
     }
 }
 @media(min-width: $tabletBreak) {
-    .categories-aside {
+    .posts-container .categories-aside {
         background-color: transparent;
         position: relative;
         transform: translateX(0);
@@ -153,7 +175,12 @@ main {
         display: none;
     }
     .races-aside {
-        width: 30vw;
+        width: 30vw !important;
+    }
+    .post-single-container .categories-aside {
+        position: relative;
+        transform: translateX(0);
+        background-color: transparent;
     }
 }
 

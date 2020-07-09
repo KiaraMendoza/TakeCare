@@ -78,11 +78,11 @@ const PostsPage = (props) => {
     return (
         <React.Fragment>
             <div className="posts-container row mx-0 px-0 position-relative justify-content-center">
-                <aside id="left-aside" className="categories-aside col-md-4 col-lg-2"><CategoriesAside /></aside>
-                    <div className="post-page-content col-12 col-md-8 col-lg-10 col-xl-8 px-0">
+                <aside id="left-aside" className="categories-aside col-md-3 col-lg-2"><CategoriesAside /></aside>
+                    <div className="post-page-content col-12 col-md-8 px-0">
                         <PostsPageContent posts={props.posts ? props.posts : false} data={props.data ? props.data : false } />
                     </div>
-                <aside id="right-aside" className="races-aside col-xl-2 pl-xl-0"><RacesAside /></aside>
+                <aside id="right-aside" className="races-aside col-xl-2 px-lg-0"><RacesAside /></aside>
                 <div className="see-aside-buttons right-aside-button position-fixed"><i onClick={RightMenuHandler} className="fas fa-align-right"></i></div>
                 <div className="see-aside-buttons left-aside-button position-fixed"><i onClick={LeftMenuHandler} className="fas fa-align-left"></i></div>
             </div>

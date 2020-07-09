@@ -177,7 +177,7 @@ const CategoriesAside = props => {
             <CategoriesContext.Consumer>
                 {(context) => {
                     return (
-                        <div className="aside-content mt-5">
+                        <div className="aside-content mt-5 pl-0">
                             <div className="categories-list">
                                 <div className="categories d-flex flex-column text-center">
                                     {(auth.token && auth.userRol === 'Admin') &&

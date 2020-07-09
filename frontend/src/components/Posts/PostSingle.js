@@ -356,8 +356,8 @@ class PostSingle extends Component {
                     <div className="go-to-post-page position-absolute">
                         <Link className="go-back-button" to="/posts"><i className="fas fa-arrow-circle-left mr-2"></i>To posts page</Link>
                     </div>
-                    <aside id="right-aside" className="races-aside col-xl-2 pl-xl-0"><RacesAside /></aside>
-                    <div className="post-single-data px-5 col-12 col-lg-8">
+                    <aside id="left-aside" className="categories-aside col-md-4 col-lg-3 col-xl-2"><CategoriesAside /></aside>
+                    <div className="post-single-data px-5 col-12 col-md-8">
                         <div className="post-data mb-5">
                             <h1 className="pb-2">{this.state.postData.title}</h1>
                             <p>{this.state.postData.description}</p>
@@ -404,7 +404,7 @@ class PostSingle extends Component {
                             </div>
                         </div>
                     </div>
-                    <aside id="left-aside" className="categories-aside col-md-4 col-lg-2"><CategoriesAside /></aside>
+                    <aside id="right-aside" className="races-aside col-xl-2 pl-xl-0"><RacesAside /></aside>
                     <div className="see-aside-buttons right-aside-button position-fixed"><i onClick={this.RightMenuHandler} className="fas fa-align-right"></i></div>
                     <div className="see-aside-buttons left-aside-button position-fixed"><i onClick={this.LeftMenuHandler} className="fas fa-align-left"></i></div>
                 </div>
